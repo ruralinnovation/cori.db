@@ -18,7 +18,7 @@ connect_to_db <- function(schema, config_name = NULL, config_file = "../base/con
   } else {
 
     uname <- Sys.getenv("DB_USER")
-    pwd   <- Sys.getenv("DP_PWD")
+    pwd   <- Sys.getenv("DB_PWD")
 
   }
 
