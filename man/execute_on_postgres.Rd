@@ -2,7 +2,7 @@
 % Please edit documentation in R/execute_on_db.R
 \name{execute_on_postgres}
 \alias{execute_on_postgres}
-\title{Send query to postgres for execution}
+\title{Send query to postgres for execution. Vectorized over 'query'}
 \usage{
 execute_on_postgres(con, query)
 }
@@ -12,5 +12,5 @@ execute_on_postgres(con, query)
 \item{query}{A query with no expected return value (e.g. create, drop, alter)}
 }
 \description{
-Send query to postgres for execution
+Send query to postgres for execution. Vectorized over 'query'
 }

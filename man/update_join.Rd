@@ -5,24 +5,21 @@
 \title{Update a database table using an update join}
 \usage{
 update_join(
-  old_tbl,
-  new_tbl,
-  variable_to_update,
-  variable_to_update_from = NULL,
+  table_to_update,
+  table_to_update_from,
+  variable_update_map,
   key,
   con
 )
 }
 \arguments{
-\item{old_tbl}{Name of the table with the old values}
+\item{table_to_update}{Name of the table with the old values}
 
-\item{new_tbl}{Name of the table with the new values}
+\item{table_to_update_from}{Name of the table with the new values}
 
-\item{variable_to_update}{The variable to update in old_tbl}
+\item{variable_update_map}{A list of characters corresponding to shared names of columns to update, or a named list of key value pairs in the form \code{list(variable_name_to_update = 'variable_name_to_update_from')}}
 
-\item{variable_to_update_from}{The variable in new_tbl to use to update the values in old_tbl}
-
-\item{key}{Key variable to join on}
+\item{key}{Key variable to join on or named list in the form \code{list(old_table_key = 'new_table_key')}}
 
 \item{con}{A Postgres connection}
 }
