@@ -6,6 +6,8 @@
 #' @export
 #'
 #' @importFrom stringr str_split
+#' @importFrom stringr str_squish
+
 read_sql <- function(filepath){
   con <- file(filepath, "r")
   sql_string <- ""
@@ -17,16 +19,19 @@ read_sql <- function(filepath){
       break
     }
 
+    if(grepl("--", line)){
+      line <- ""
+      # next
+    }
+
     line <- gsub("\\t", " ", line)
 
-    if(grepl("--",line) == TRUE){
-      line <- paste(sub("--", "/*", line), "*/")
-    }
 
     sql_string <- paste(sql_string, line)
   }
 
   close(con)
   res <- stringr::str_split(sql_string, pattern = ";")
-  return(unlist(res))
+  res <- stringr::str_squish(unlist(res))
+  return(res[res != ""])
 }
