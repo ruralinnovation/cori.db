@@ -4,10 +4,10 @@
 \alias{read_sql}
 \title{Read SQL file}
 \usage{
-read_sql(filepath)
+read_sql(filepaths)
 }
 \arguments{
-\item{filepath}{Path to .SQL or .TXT file to read}
+\item{filepaths}{Path to .SQL or .TXT file to read. Can be a vector or list of files}
 }
 \value{
 A character vector of SQL queries

@@ -18,3 +18,34 @@ glue_update_query <- function(table_to_update,
 }
 
 vglue_update_query <- Vectorize(glue_update_query, vectorize.args = c('variable_to_update', 'variable_to_update_from'))
+
+
+read_sql_file <- function(filepath){
+  con <- file(filepath, "r")
+  sql_string <- ""
+
+  while (TRUE){
+    line <- readLines(con, n = 1)
+
+    if ( length(line) == 0 ){
+      break
+    }
+
+    if(grepl("--", line)){
+      line <- ""
+      # next
+    }
+
+    line <- gsub("\\t", " ", line)
+
+
+    sql_string <- paste(sql_string, line)
+  }
+
+  close(con)
+  res <- stringr::str_split(sql_string, pattern = ";")
+  res <- stringr::str_squish(unlist(res))
+  return(res[res != ""])
+}
+
+vread_sql_file <- Vectorize(read_sql_file, vectorize.args = "filepath")
