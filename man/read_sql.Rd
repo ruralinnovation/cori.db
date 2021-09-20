@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_sql.R
 \name{read_sql}
 \alias{read_sql}
-\title{Read SQL file}
+\title{Read SQL file. Vectorized over filepath}
 \usage{
 read_sql(filepaths)
 }
@@ -13,5 +13,5 @@ read_sql(filepaths)
 A character vector of SQL queries
 }
 \description{
-Read SQL file
+Read SQL file. Vectorized over filepath
 }

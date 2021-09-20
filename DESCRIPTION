@@ -17,4 +17,6 @@ Imports:
     config,
     stringr,
     data.table,
-    sf
+    sf,
+    crayon,
+    cli
