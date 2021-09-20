@@ -40,9 +40,8 @@ set_db_credentials <- function(username, password, install = TRUE){
 
           cat("Your original .Renviron will be backed up and stored in your R HOME directory if needed.")
 
-          oldenv <- utils::read.table(renv, stringsAsFactors = FALSE)
-          newenv <- oldenv[-grep("DB_USER", oldenv),]
-          newenv <- newenv[-grep("DB_PWD", newenv),]
+          oldenv <- utils::read.table(renv, stringsAsFactors = FALSE)$V1
+          newenv <- oldenv[!grepl("DB_USER|DB_PWD", oldenv)]
 
           utils::write.table(newenv, renv, quote = FALSE, sep = "\n",
                              col.names = FALSE, row.names = FALSE
