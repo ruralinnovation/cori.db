@@ -5,6 +5,7 @@
 #' the completed templates as data frames or call \code{update_metadata} directly.
 #'
 #' @param data_tbl Optionally provide a data frame, which will populate the \code{column_name} column with the column names
+#' @param source_meta_template If \code{TRUE}, output a template for source metadata. This is only necessary if the data are sourced from a currently undocumented data source
 #' @param output_csv If \code{TRUE}, write field and table metadata templates to .CSV files in the working directory
 #'
 #' @return A named list with field and table metadata templates
@@ -19,7 +20,7 @@
 #' @importFrom data.table data.table
 #' @importFrom data.table fwrite
 #'
-create_metadata_tables <- function(data_tbl = NULL, output_csv = TRUE){
+create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE, output_csv = TRUE){
 
   stopifnot(is.logical(output_csv))
 
@@ -28,8 +29,7 @@ create_metadata_tables <- function(data_tbl = NULL, output_csv = TRUE){
     field_meta <- data.table::data.table(table_name = "",
                                          column_name = "",
                                          description = "",
-                                         data_source = "",
-                                         last_update = as.character(Sys.Date())
+                                         data_source = ""
     )
 
   } else {
@@ -49,26 +49,38 @@ create_metadata_tables <- function(data_tbl = NULL, output_csv = TRUE){
 
   )
 
+  source_meta <- data.table::data.table(data_source = "",
+                                        table_name = "",
+                                        table_schema = "",
+                                        source_year = "",
+                                        update_cadence = ""
+
+  )
+
+  out <- list(field_metadata = field_meta,
+              table_metadata = table_meta
+  )
+
+  if (source_meta_template){
+    out['source_meta'] <- source_meta
+  }
+
   if (output_csv){
     tbl_name <- ifelse(is.null(data_tbl), "", paste0(deparse(substitute(data_tbl)), "_"))
 
     data.table::fwrite(field_meta, paste0(tbl_name, "field_metadata.csv"))
     data.table::fwrite(table_meta, paste0(tbl_name, "table_metadata.csv"))
 
-    return(
-      invisible(
-        list(field_metadata = field_meta,
-             table_metadata = table_meta
-        )
-      )
-    )
+
+
+    if (source_meta_template){
+      data.table::fwrite(source_meta, paste0(tbl_name, "table_metadata.csv"))
+    }
+
+    return(invisible(out))
 
   }
 
-  return(
-    list(field_metadata = field_meta,
-         table_metadata = table_meta
-    )
-  )
+  out
 
 }

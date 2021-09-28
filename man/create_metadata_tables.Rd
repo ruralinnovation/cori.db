@@ -4,10 +4,16 @@
 \alias{create_metadata_tables}
 \title{Create template field and table metadata documents}
 \usage{
-create_metadata_tables(data_tbl = NULL, output_csv = TRUE)
+create_metadata_tables(
+  data_tbl = NULL,
+  source_meta_template = FALSE,
+  output_csv = TRUE
+)
 }
 \arguments{
 \item{data_tbl}{Optionally provide a data frame, which will populate the \code{column_name} column with the column names}
+
+\item{source_meta_template}{If \code{TRUE}, output a template for source metadata. This is only necessary if the data are sourced from a currently undocumented data source}
 
 \item{output_csv}{If \code{TRUE}, write field and table metadata templates to .CSV files in the working directory}
 }
