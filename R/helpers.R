@@ -49,3 +49,11 @@ read_sql_file <- function(filepath){
 }
 
 vread_sql_file <- Vectorize(read_sql_file, vectorize.args = "filepath")
+
+
+stop_quietly <- function(...) {
+  opt <- options(show.error.messages = FALSE)
+  on.exit(options(opt))
+  cat(paste(..., collapse = " "))
+  stop()
+}
