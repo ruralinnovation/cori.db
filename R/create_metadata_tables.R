@@ -19,6 +19,8 @@
 #'
 #' @importFrom data.table data.table
 #' @importFrom data.table fwrite
+#' @importFrom crayon green
+#' @importFrom cli symbol
 #'
 create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE, output_csv = TRUE){
 
@@ -62,7 +64,7 @@ create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE
   )
 
   if (source_meta_template){
-    out['source_meta'] <- source_meta
+    out[['source_meta']] <- source_meta
   }
 
   if (output_csv){
@@ -74,8 +76,10 @@ create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE
 
 
     if (source_meta_template){
-      data.table::fwrite(source_meta, paste0(tbl_name, "table_metadata.csv"))
+      data.table::fwrite(source_meta, paste0(tbl_name, "source_metadata.csv"))
     }
+
+    cat(crayon::green(cli::symbol$tick), " Metadata .CSVs created\n", sep = "")
 
     return(invisible(out))
 
