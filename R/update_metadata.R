@@ -12,11 +12,16 @@
 #' @importFrom crayon green
 #' @importFrom cli symbol
 #'
-update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
+update_metadata <- function(con, field_meta = NULL, table_meta = NULL, source_meta = NULL){
 
 
-  stopifnot(is.data.frame(field_meta))
-  stopifnot(is.data.frame(table_meta))
+  stopifnot(is.data.frame(field_meta) | is.null(field_meta))
+  stopifnot(is.data.frame(table_meta) | is.null(table_meta))
+  stopifnot(is.data.frame(source_meta) | is.null(source_meta))
+
+  if (all(is.null(field_meta), is.null(table_meta), is.null(source_meta))){
+    stop_quietly("No metadata provided to update")
+  }
 
   # check for name mismatches -----------------------------------------------
 
@@ -24,50 +29,53 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
   table_cols <- c("table_name", "table_schema", "table_description", "last_update")
   source_cols <- c("source_code", "source_name", "table_name", "table_schema", "source_year", "description", "update_cadence")
 
-  stopifnot(all(names(field_meta) %in% field_cols))
-  stopifnot(all(field_cols %in% names(field_meta)))
+  if (!is.null(field_meta)){
 
-  stopifnot(all(names(table_meta) %in% table_cols))
-  stopifnot(all(table_cols %in% names(table_meta)))
+    stopifnot(all(names(field_meta) %in% field_cols))
+    stopifnot(all(field_cols %in% names(field_meta)))
 
-  if (!is.null(source_meta)){
-    stopifnot(all(names(source_meta) %in% source_cols))
-    stopifnot(all(source_cols %in% names(source_meta)))
-  }
-
-  # check for conflicts -------------------------------------------------------
-
-  ## check if combination of column and table name already exists in meta table ----
-  field_check_q <- glue::glue_sql("select count(*) from metadata.field_metadata where column_name in ({field_meta$column_name*})
+    ## check if combination of column and table name already exists in meta table ----
+    field_check_q <- glue::glue_sql("select count(*) from metadata.field_metadata where column_name in ({field_meta$column_name*})
                                   and table_name in ({field_meta$table_name*});", .con = con)
 
-  field_check <- as.numeric(DBI::dbGetQuery(con, field_check_q)$count)
+    field_check <- as.numeric(DBI::dbGetQuery(con, field_check_q)$count)
 
-  if (field_check > 0){
-    ans <- utils::menu(c(paste(crayon::green(cli::symbol$tick), 'Yes'),
-                         paste(crayon::red(cli::symbol$cross), 'No')),
-                       title = "This will overwrite existing metadata in the `field_metadata` table. Do you wish to proceed?")
-  } else {
-    ans <- 1
+    if (field_check > 0){
+      ans <- utils::menu(c(paste(crayon::green(cli::symbol$tick), 'Yes'),
+                           paste(crayon::red(cli::symbol$cross), 'No')),
+                         title = "This will overwrite existing metadata in the `field_metadata` table. Do you wish to proceed?")
+    } else {
+      ans <- 1
+    }
+
   }
 
-  ## check if combination of table name and table schema exists in table meta ----
-  table_check_q <- glue::glue_sql("select count(*) from metadata.table_metadata where table_name in ({table_meta$table_name*})
+  if (!is.null(table_meta)){
+
+    stopifnot(all(names(table_meta) %in% table_cols))
+    stopifnot(all(table_cols %in% names(table_meta)))
+
+    ## check if combination of table name and table schema exists in table meta ----
+    table_check_q <- glue::glue_sql("select count(*) from metadata.table_metadata where table_name in ({table_meta$table_name*})
                                   and table_schema in ({table_meta$table_schema*});", .con = con)
 
-  table_check <- as.numeric(DBI::dbGetQuery(con, table_check_q)$count)
+    table_check <- as.numeric(DBI::dbGetQuery(con, table_check_q)$count)
 
-  if (table_check > 0){
-    ans <- utils::menu(c(paste(crayon::green(cli::symbol$tick), 'Yes'),
-                         paste(crayon::red(cli::symbol$cross), 'No')),
-                       title = "This will overwrite existing metadata in the `table_metadata` table. Do you wish to proceed?")
-  } else {
-    ans <- 1
+    if (table_check > 0){
+      ans <- utils::menu(c(paste(crayon::green(cli::symbol$tick), 'Yes'),
+                           paste(crayon::red(cli::symbol$cross), 'No')),
+                         title = "This will overwrite existing metadata in the `table_metadata` table. Do you wish to proceed?")
+    } else {
+      ans <- 1
+    }
+
   }
 
-  ## check if source meta exists ----------------------------------------
-
   if (!is.null(source_meta)){
+
+    stopifnot(all(names(source_meta) %in% source_cols))
+    stopifnot(all(source_cols %in% names(source_meta)))
+
 
     source_check_q <- glue::glue_sql("select count(*) from metadata.source_metadata where source_code in ({source_meta$source_code*});",
                                      .con = con)
@@ -82,7 +90,9 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
       ans <- 1
     }
 
+
   }
+
 
   if (ans != 1){
     stop_quietly("Cancelled writing metdata")
@@ -90,25 +100,27 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
 
 
   # write field metadata ----------------------------------------------------
-
-  cleanup_field_query <- glue::glue_sql("delete from metadata.field_metadata where column_name in ({field_meta$column_name*})
+  if (!is.null(field_meta)){
+    cleanup_field_query <- glue::glue_sql("delete from metadata.field_metadata where column_name in ({field_meta$column_name*})
                                   and table_name in ({field_meta$table_name*});", .con = con)
 
-  execute_on_postgres(con, cleanup_field_query)
+    execute_on_postgres(con, cleanup_field_query)
 
-  DBI::dbWriteTable(con, DBI::Id(schema = 'metadata', table = 'field_metadata'), field_meta, append = TRUE)
+    DBI::dbWriteTable(con, DBI::Id(schema = 'metadata', table = 'field_metadata'), field_meta, append = TRUE)
 
-
+  }
   # write table meta -------------------------------------------------------
 
-  cleanup_table_query <- glue::glue_sql("delete from metadata.table_metadata where table_name in ({table_meta$table_name*})
+  if (!is.null(table_meta)){
+    cleanup_table_query <- glue::glue_sql("delete from metadata.table_metadata where table_name in ({table_meta$table_name*})
                                   and table_schema in ({table_meta$table_schema*});", .con = con)
 
-  execute_on_postgres(con, cleanup_table_query)
-  dbWriteTable(con, DBI::Id(schema = 'metadata', table = 'table_metadata'), table_meta, append = TRUE)
+    execute_on_postgres(con, cleanup_table_query)
+    dbWriteTable(con, DBI::Id(schema = 'metadata', table = 'table_metadata'), table_meta, append = TRUE)
 
-
+  }
   # write source meta -------------------------------------------------------
+
   if (!is.null(source_meta)){
 
     source_cleanup_query <- glue::glue_sql("delete from metadata.source_metadata where source_code in ({source_meta$source_code*});",
@@ -121,6 +133,7 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
   }
 
   cat(crayon::green(cli::symbol$tick), " Metadata succesfully updated", sep = "")
+
 
 }
 
