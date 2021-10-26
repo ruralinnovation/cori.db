@@ -9,6 +9,9 @@
 #'
 #' @importFrom utils menu
 #' @import DBI
+#' @importFrom crayon green
+#' @importFrom cli symbol
+#'
 update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
 
 
@@ -36,7 +39,7 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
 
   ## check if combination of column and table name already exists in meta table ----
   field_check_q <- glue::glue_sql("select count(*) from metadata.field_metadata where column_name in ({field_meta$column_name*})
-                                  and table_name in ({field_meta$table_name*};", .con = con)
+                                  and table_name in ({field_meta$table_name*});", .con = con)
 
   field_check <- as.numeric(DBI::dbGetQuery(con, field_check_q)$count)
 
@@ -91,7 +94,7 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
   cleanup_field_query <- glue::glue_sql("delete from metadata.field_metadata where column_name in ({field_meta$column_name*})
                                   and table_name in ({field_meta$table_name*});", .con = con)
 
-  execute_on_postgres(cleanup_field_query)
+  execute_on_postgres(con, cleanup_field_query)
 
   DBI::dbWriteTable(con, DBI::Id(schema = 'metadata', table = 'field_metadata'), field_meta, append = TRUE)
 
@@ -116,5 +119,8 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
     DBI::dbWriteTable(con, DBI::Id(schema = 'metadata', table = 'source_metadata'), source_meta, append = TRUE)
 
   }
+
+  cat(crayon::green(cli::symbol$tick), " Metadata succesfully updated", sep = "")
+
 }
 
