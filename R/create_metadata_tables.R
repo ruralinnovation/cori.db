@@ -39,7 +39,7 @@ create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE
     field_meta <- data.table::data.table(table_name = "",
                                          column_name = names(data_tbl),
                                          description = "",
-                                         data_source = ""
+                                         source_code = ""
     )
 
   }
@@ -51,10 +51,12 @@ create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE
 
   )
 
-  source_meta <- data.table::data.table(data_source = "",
+  source_meta <- data.table::data.table(source_code = "",
+                                        source_name = "",
                                         table_name = "",
                                         table_schema = "",
                                         source_year = "",
+                                        description = "",
                                         update_cadence = ""
 
   )

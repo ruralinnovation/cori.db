@@ -20,9 +20,9 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
 
   # check for name mismatches -----------------------------------------------
 
-  field_cols <- c("table_name", "column_name", "description", "data_source")
+  field_cols <- c("table_name", "column_name", "description", "source_code")
   table_cols <- c("table_name", "table_schema", "table_description", "last_update")
-  source_cols <- c("data_source", "table_name", "table_schema", "source_year", "update_cadence")
+  source_cols <- c("source_code", "source_name", "table_name", "table_schema", "source_year", "description", "update_cadence")
 
   stopifnot(all(names(field_meta) %in% field_cols))
   stopifnot(all(field_cols %in% names(field_meta)))
