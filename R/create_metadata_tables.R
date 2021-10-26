@@ -31,7 +31,7 @@ create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE
     field_meta <- data.table::data.table(table_name = "",
                                          column_name = "",
                                          description = "",
-                                         data_source = ""
+                                         source_code = ""
     )
 
   } else {
