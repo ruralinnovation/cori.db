@@ -69,7 +69,7 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
 
   if (!is.null(source_meta)){
 
-    source_check_q <- glue::glue_sql("select count(*) from metadata.source_metadata where data_source in ({source_meta$data_source*});",
+    source_check_q <- glue::glue_sql("select count(*) from metadata.source_metadata where source_code in ({source_meta$source_code*});",
                                      .con = con)
 
     source_check <- as.numeric(DBI::dbGetQuery(con, source_check_q)$count)
@@ -111,7 +111,7 @@ update_metadata <- function(con, field_meta, table_meta, source_meta = NULL){
   # write source meta -------------------------------------------------------
   if (!is.null(source_meta)){
 
-    source_cleanup_query <- glue::glue_sql("delete from metadata.source_metadata where data_source in ({source_meta$data_source*});",
+    source_cleanup_query <- glue::glue_sql("delete from metadata.source_metadata where source_code in ({source_meta$source_code*});",
                                            .con = con)
 
     execute_on_postgres(con, source_cleanup_query)
