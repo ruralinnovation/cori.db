@@ -132,7 +132,7 @@ update_metadata <- function(con, field_meta = NULL, table_meta = NULL, source_me
 
   }
 
-  cat(crayon::green(cli::symbol$tick), " Metadata succesfully updated", sep = "")
+  cat(crayon::green(cli::symbol$tick), " Metadata succesfully updated\n", sep = "")
 
 
 }
