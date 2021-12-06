@@ -18,21 +18,24 @@
 
 write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial = FALSE, field_meta = NULL, table_meta = NULL, source_meta = NULL){
 
-  if (spatial & 'sf' %in% class(dta)){
+  if (spatial){
+
+    if (!'sf' %in% class(dta)){
+      stop('`spatial` is TRUE, but `dta` is not of class sf', call. = FALSE)
+    }
+
     sf::st_write(dta, con, name, delete_dsn = overwrite, append = append)
-  } else {
-    stop('`spatial` is TRUE, but `dta` is not of class sf', call. = FALSE)
   }
 
   if (!spatial){
     DBI::dbWriteTable(con, name, dta, overwrite = overwrite, append = append)
   }
 
-  if (!is.null(field_meta)){
+  if (!is.null(field_meta) | !is.null(table_meta)){
 
-    if (is.null(table_meta)){
-      stop("Both field and table metadata are required to update metadata")
-    }
+    # if (is.null(table_meta)){
+    #   stop("Both field and table metadata are required to update metadata")
+    # }
 
     update_metadata(con, field_meta, table_meta, source_meta)
 
