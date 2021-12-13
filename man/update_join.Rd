@@ -17,9 +17,9 @@ update_join(
 
 \item{table_to_update_from}{Name of the table with the new values}
 
-\item{variable_update_map}{A list of characters corresponding to shared names of columns to update, or a named list of key value pairs in the form \code{list(variable_name_to_update = 'variable_name_to_update_from')}}
+\item{variable_update_map}{A list of characters corresponding to shared names of columns to update, or a named list of key value pairs in the form `list(variable_name_to_update = 'variable_name_to_update_from')`}
 
-\item{key}{Key variable to join on or named list in the form \code{list(old_table_key = 'new_table_key')}}
+\item{key}{Key variable to join on or named list in the form `list(old_table_key = 'new_table_key')`}
 
 \item{con}{A Postgres connection}
 }

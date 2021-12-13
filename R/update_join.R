@@ -2,8 +2,8 @@
 #'
 #' @param table_to_update Name of the table with the old values
 #' @param table_to_update_from Name of the table with the new values
-#' @param variable_update_map A list of characters corresponding to shared names of columns to update, or a named list of key value pairs in the form \code{list(variable_name_to_update = 'variable_name_to_update_from')}
-#' @param key Key variable to join on or named list in the form \code{list(old_table_key = 'new_table_key')}
+#' @param variable_update_map A list of characters corresponding to shared names of columns to update, or a named list of key value pairs in the form `list(variable_name_to_update = 'variable_name_to_update_from')`
+#' @param key Key variable to join on or named list in the form `list(old_table_key = 'new_table_key')`
 #' @param con A Postgres connection
 #'
 #' @export

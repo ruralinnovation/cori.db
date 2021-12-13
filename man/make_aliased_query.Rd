@@ -13,7 +13,7 @@ make_aliased_query(named_list, source_table, command = "select", con)
 
 \item{command}{What to do with the aliased query (e.g. 'create table foo as'). Defaults to 'select'.}
 
-\item{con}{A database connection for glue::glue_sql()}
+\item{con}{A database connection for `glue::glue_sql()`}
 }
 \value{
 SQL query string

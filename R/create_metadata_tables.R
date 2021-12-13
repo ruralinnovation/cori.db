@@ -1,12 +1,12 @@
 #' Create template field and table metadata documents
 #'
-#' The templates produced by this function match the format of the \code{metadata} schema
-#' metadata tables. For new data sets, create templates, fill them out, then call either \code{write_db} providing
-#' the completed templates as data frames or call \code{update_metadata} directly.
+#' The templates produced by this function match the format of the metadata schema
+#' metadata tables. For new data sets, create templates, fill them out, then call either `write_db` providing
+#' the completed templates as data frames or call `update_metadata` directly.
 #'
-#' @param data_tbl Optionally provide a data frame, which will populate the \code{column_name} column with the column names
-#' @param source_meta_template If \code{TRUE}, output a template for source metadata. This is only necessary if the data are sourced from a currently undocumented data source
-#' @param output_csv If \code{TRUE}, write field and table metadata templates to .CSV files in the working directory
+#' @param data_tbl Optionally provide a data frame, which will populate the `column_name` column with the column names
+#' @param source_meta_template If `TRUE`, output a template for source metadata. This is only necessary if the data are sourced from a currently undocumented data source
+#' @param output_csv If `TRUE`, write field and table metadata templates to .CSV files in the working directory
 #'
 #' @return A named list with field and table metadata templates
 #' @export

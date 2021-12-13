@@ -2,7 +2,7 @@
 #'
 #' @param username A valid Postgres username
 #' @param password A valid Postgres password
-#' @param install If \code{TRUE}, save credentials to .Renviron. Otherwise, set per session.
+#' @param install If TRUE, save credentials to .Renviron. Otherwise, set per session.
 #'
 #' @return Username and password, invisibly
 #' @export

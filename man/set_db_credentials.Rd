@@ -11,7 +11,7 @@ set_db_credentials(username, password, install = TRUE)
 
 \item{password}{A valid Postgres password}
 
-\item{install}{If \code{TRUE}, save credentials to .Renviron. Otherwise, set per session.}
+\item{install}{If TRUE, save credentials to .Renviron. Otherwise, set per session.}
 }
 \value{
 Username and password, invisibly

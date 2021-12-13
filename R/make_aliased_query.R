@@ -2,15 +2,16 @@
 #'
 #' @param named_list A named list
 #' @param source_table The name of the table to select from
+#' @param where Optional vector of conditions to filter on
 #' @param command What to do with the aliased query (e.g. 'create table foo as'). Defaults to 'select'.
-#' @param con A database connection for glue::glue_sql()
+#' @param con A database connection for `glue::glue_sql()`
 #'
 #' @return SQL query string
 #' @export
 #'
 #' @importFrom glue glue_sql
 #' @importFrom purrr map2
-make_aliased_query <- function(named_list, source_table, command = "select", con){
+make_aliased_query <- function(named_list, source_table, where = NULL, command = "select", con){
   query <- sprintf("%s %s from %s;",
                    command,
                    paste0(map2(named_list, names(named_list), ~{
@@ -18,6 +19,13 @@ make_aliased_query <- function(named_list, source_table, command = "select", con
                    }), collapse = ", "),
                    source_table
   )
+
+  if (!is.null(where)){
+    condition <- paste0(where, collapse = " and ")
+
+    query <- paste0(query, " where ", condition)
+
+  }
 
   return(query)
 
