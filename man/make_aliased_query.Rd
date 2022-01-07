@@ -4,12 +4,20 @@
 \alias{make_aliased_query}
 \title{Create a quoted SQL query with column aliasing from named list}
 \usage{
-make_aliased_query(named_list, source_table, command = "select", con)
+make_aliased_query(
+  named_list,
+  source_table,
+  where = NULL,
+  command = "select",
+  con
+)
 }
 \arguments{
 \item{named_list}{A named list}
 
 \item{source_table}{The name of the table to select from}
+
+\item{where}{Optional vector of conditions to filter on}
 
 \item{command}{What to do with the aliased query (e.g. 'create table foo as'). Defaults to 'select'.}
 

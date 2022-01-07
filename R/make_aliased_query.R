@@ -12,7 +12,7 @@
 #' @importFrom glue glue_sql
 #' @importFrom purrr map2
 make_aliased_query <- function(named_list, source_table, where = NULL, command = "select", con){
-  query <- sprintf("%s %s from %s;",
+  query <- sprintf("%s %s from %s",
                    command,
                    paste0(map2(named_list, names(named_list), ~{
                      glue_sql("{`.x`} as {`.y`}", .con = con)
