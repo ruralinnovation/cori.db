@@ -34,6 +34,15 @@ create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE
                                          source_code = ""
     )
 
+    table_meta <- data.table::data.table(table_name = "",
+                                         table_schema = "",
+                                         table_description = "",
+                                         last_update = as.character(Sys.Date()),
+                                         ncols = "",
+                                         nrows = ""
+
+    )
+
   } else {
 
     field_meta <- data.table::data.table(table_name = "",
@@ -42,14 +51,18 @@ create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE
                                          source_code = ""
     )
 
+    table_meta <- data.table::data.table(table_name = "",
+                                         table_schema = "",
+                                         table_description = "",
+                                         last_update = as.character(Sys.Date()),
+                                         ncols = ncol(data_tbl),
+                                         nrows = nrow(data_tbl)
+
+    )
+
   }
 
-  table_meta <- data.table::data.table(table_name = "",
-                                       table_schema = "",
-                                       table_description = "",
-                                       last_update = as.character(Sys.Date())
 
-  )
 
   source_meta <- data.table::data.table(source_code = "",
                                         source_name = "",

@@ -26,7 +26,7 @@ update_metadata <- function(con, field_meta = NULL, table_meta = NULL, source_me
   # check for name mismatches -----------------------------------------------
 
   field_cols <- c("table_name", "column_name", "description", "source_code")
-  table_cols <- c("table_name", "table_schema", "table_description", "last_update")
+  table_cols <- c("table_name", "table_schema", "table_description", "last_update", 'ncols', 'nrows')
   source_cols <- c("source_code", "source_name", "table_name", "table_schema", "source_year", "description", "update_cadence")
 
   if (!is.null(field_meta)){
