@@ -57,3 +57,43 @@ stop_quietly <- function(...) {
   cat(paste(..., collapse = " "))
   stop()
 }
+
+pull_metadata <- function(con, table){
+  metadata_classes <- c('source', 'table', 'field')
+  file_paths <- paste(tempdir(),'session_metadata',metadata_classes,paste0("%s",'.csv') ,sep ="/")
+  names(file_paths) <- metadata_classes
+
+  if(!dir.exists(paste(tempdir(),'session_metadata', sep ="/"))){ ## check if temp directory already exists
+    dir.create(paste(tempdir(),'session_metadata', sep ="/"))
+
+    for(class in metadata_classes){
+      dir.create(paste(tempdir(),'session_metadata',class, sep ="/"))
+    }
+
+  }
+
+
+  table_metadata <- DBI::dbGetQuery(con,glue::glue_sql('select * from metadata.table_metadata where table_name ={table}', .con = con))
+  if(nrow(table_metadata) == 0){
+    message("No table metadata exists in the database")
+    return(NULL)
+  }
+
+  data.table::fwrite(table_metadata, file = sprintf(file_paths["table"], table))
+
+  ## write table metadata out to the temp dir
+  field_metadata <- DBI::dbGetQuery(con, glue::glue_sql('select * from metadata.field_metadata where table_name ={table}', .con = con))
+
+  if(nrow(field_metadata) > 0){
+
+    source_metadata <- DBI::dbGetQuery(con, glue::glue_sql('select * from metadata.source_metadata where source_code in ({unique(field_metadata$source_code)*})', .con = con))
+    data.table::fwrite(field_metadata, file = sprintf(file_paths["field"], table))
+
+    if(nrow(source_metadata) > 0){
+
+      data.table::fwrite(source_metadata, file = sprintf(file_paths["source"], table))
+
+    }
+  }
+  message(paste("Metadata for", table,"has been stored in a temp directory"))
+}
