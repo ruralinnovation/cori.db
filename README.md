@@ -1,4 +1,4 @@
-# Databse connection and interaction functions
+# Database connection and interaction functions
 
 ![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)
 
