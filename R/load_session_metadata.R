@@ -29,6 +29,8 @@ load_session_metadata <- function(){
 
   names(session_metadata) <- metadata_types
 
+  class(session_metadata) <- append(class(session_metadata), "session_metadata")
+
   session_metadata
 
 }
