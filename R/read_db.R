@@ -11,14 +11,17 @@ read_db <- function(con, table, spatial = FALSE){
 
   stopifnot(is.logical(spatial))
 
-  if (spatial){
-    tbl <- sf::st_read(con, table)
+  if (spatial) {
+    out <- sf::st_read(con, table)
 
-    return(tbl)
-
+  } else {
+   
+    out <- data.table::as.data.table(DBI::dbReadTable(con, table))
+     
   }
-
-  data.table::as.data.table(DBI::dbReadTable(con, table))
-
+  
+  pull_metadata(con, table)
+  
+  return(out)
 
 }
