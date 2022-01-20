@@ -2,7 +2,8 @@ Package: cori.db
 Type: Package
 Title: DB and SQL Helper Functions
 Version: 0.1.0
-Author: Matt Rogers
+Authors@R: c(person(given="Matt", family="Rogers", role = c("cre","aut"), email="matt.rogers@ruralinnovation.us"), 
+    person(given="Drew", family="Rosebush", role =c("ctb"), email="drew.rosebush@ruralinnovation.us"))
 Maintainer: Matt Rogers <matt.rogers@ruralinnovation.us>
 Description: Functions for connecting to and working with the CORI Postgres DB.
 License: file LICENSE
