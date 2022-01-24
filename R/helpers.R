@@ -59,8 +59,12 @@ stop_quietly <- function(...) {
 }
 
 pull_metadata <- function(con, table){
+
+  # table <-  paste(sprintf("'%s'", table), collapse = ", ")
+
+  # cat(table, "\n")
   metadata_classes <- c('source', 'table', 'field')
-  file_paths <- paste(tempdir(),'session_metadata',metadata_classes,paste0("%s",'.csv') ,sep ="/")
+  file_paths <- paste(tempdir(),'session_metadata', metadata_classes, paste0("%s",'.csv') ,sep ="/")
   names(file_paths) <- metadata_classes
 
   if(!dir.exists(paste(tempdir(),'session_metadata', sep ="/"))){ ## check if temp directory already exists
@@ -73,27 +77,28 @@ pull_metadata <- function(con, table){
   }
 
 
-  table_metadata <- DBI::dbGetQuery(con,glue::glue_sql('select * from metadata.table_metadata where table_name ={table}', .con = con))
+  cat(glue::glue_sql('select * from metadata.table_metadata where table_name in ({table*})', .con = con), "\n")
+  table_metadata <- DBI::dbGetQuery(con,glue::glue_sql('select * from metadata.table_metadata where table_name in ({table*})', .con = con))
   if(nrow(table_metadata) == 0){
     message("No table metadata exists in the database")
     return(NULL)
   }
 
-  data.table::fwrite(table_metadata, file = sprintf(file_paths["table"], table))
+  data.table::fwrite(table_metadata, file = sprintf(file_paths["table"], paste0(table, collapse = "")))
 
   ## write table metadata out to the temp dir
-  field_metadata <- DBI::dbGetQuery(con, glue::glue_sql('select * from metadata.field_metadata where table_name ={table}', .con = con))
+  field_metadata <- DBI::dbGetQuery(con, glue::glue_sql('select * from metadata.field_metadata where table_name in ({table*})', .con = con))
 
   if(nrow(field_metadata) > 0){
 
     source_metadata <- DBI::dbGetQuery(con, glue::glue_sql('select * from metadata.source_metadata where source_code in ({unique(field_metadata$source_code)*})', .con = con))
-    data.table::fwrite(field_metadata, file = sprintf(file_paths["field"], table))
+    data.table::fwrite(field_metadata, file = sprintf(file_paths["field"],  paste0(table, collapse = "")))
 
     if(nrow(source_metadata) > 0){
 
-      data.table::fwrite(source_metadata, file = sprintf(file_paths["source"], table))
+      data.table::fwrite(source_metadata, file = sprintf(file_paths["source"],  paste0(table, collapse = "")))
 
     }
   }
-  message(paste("Metadata for", table,"has been stored in a temp directory"))
+  message(paste("Metadata for", table,"has been stored in a temp directory\n"))
 }

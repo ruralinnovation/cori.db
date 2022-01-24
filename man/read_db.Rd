@@ -4,14 +4,16 @@
 \alias{read_db}
 \title{Read a database table (convenience wrapper for DBI::dbReadTable and sf::st_read)}
 \usage{
-read_db(con, table, spatial = FALSE)
+read_db(con, table = NULL, query = NULL, spatial = FALSE)
 }
 \arguments{
 \item{con}{A database connection}
 
-\item{table}{The name of the table to read}
+\item{table}{Optional name of a table to read}
 
-\item{spatial}{If TRUE return a spatial data frame}
+\item{query}{An optional SQL query to execute against the database. Use to read subsets of large tables}
+
+\item{spatial}{If TRUE return an SF spatial data frame}
 }
 \value{
 A data.table or sf class dataframe
