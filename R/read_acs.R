@@ -24,7 +24,7 @@ read_acs <- function(con, variables, year = NULL, geography = 'county', tidy = T
   if (is.null(year)){ # if no yuear provided, get latest
     query <- glue::glue_sql("select * from acs.{`tbl`} where variable in ({variables*}) and year = (select max(year) from acs.{`tbl`});", .con = con)
   } else {
-    query <- glue::glue_sql("select * from acs.{`tbl`} where variable in ({variables*}) and year in ({year});", .con = con)
+    query <- glue::glue_sql("select * from acs.{`tbl`} where variable in ({variables*}) and year in ({year*});", .con = con)
   }
 
   long_dta <- DBI::dbGetQuery(con, query)
