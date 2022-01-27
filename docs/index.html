@@ -71,7 +71,42 @@
 <a href="#database-connection-and-interaction-functions" class="anchor"></a>Database connection and interaction functions</h1></div>
 <p><img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="lifecycle"></p>
 <p>Part of the <a href="https://github.com/ruralinnovation/coriverse/wiki">coriverse</a></p>
-<p>Internal package for all things database connection and SQL function related</p>
+<p><code>cori.db</code> is an internal R package for all things database connection and SQL function related.</p>
+<p><strong>If you are connecting from a personal computer, your IP address will need to be whitelisted before you will be able to connect. Contact Matt Rogers or John Hall.</strong></p>
+<div id="setting-up-environment-variables-for-coriverse-connect_to_db-in-rstudio" class="section level2">
+<h2 class="hasAnchor">
+<a href="#setting-up-environment-variables-for-coriverse-connect_to_db-in-rstudio" class="anchor"></a>Setting up environment variables for coriverse <code>connect_to_db()</code> in RStudio</h2>
+<ol>
+<li>Run <code><a href="reference/set_db_credentials.html">set_db_credentials('user_name_here', 'password_here')</a></code> Valid DB user and password information is available in <code>/data/Github/base/config.yml</code> on the RStudio Server</li>
+<li>Restart R</li>
+<li>Run <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv('DB_USER')</a></code>. If the above steps were successful, it should return the value of DB_USER you set in Step 1</li>
+</ol>
+</div>
+<div id="connecting-to-the-database-with-connect_to_db" class="section level2">
+<h2 class="hasAnchor">
+<a href="#connecting-to-the-database-with-connect_to_db" class="anchor"></a>Connecting to the database with <code>connect_to_db()</code>
+</h2>
+<div id="with-environment-variable-set-up" class="section level3">
+<h3 class="hasAnchor">
+<a href="#with-environment-variable-set-up" class="anchor"></a>With environment variable set up</h3>
+<pre><code># connect to schema sch_source
+con &lt;- connect_to_db("sch_source")
+
+# always end scripts by disconnecting from the database!
+DBI::dbDisconnect(con)
+</code></pre>
+</div>
+<div id="using-a-config-file" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-a-config-file" class="anchor"></a>Using a config file</h3>
+<pre><code># connect to schema sch_source
+con &lt;- connect_to_db("sch_source", config_name = 'db_credentials', config_file = '../base/config.yml')
+
+# always end scripts by disconnecting from the database!
+DBI::dbDisconnect(con)
+</code></pre>
+</div>
+</div>
 </div>
   </div>
 
