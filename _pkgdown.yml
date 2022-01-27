@@ -1,0 +1,59 @@
+url: https://ruralinnovation.github.io
+
+destination: "./docs"
+
+template:
+  params:
+    bootswatch: cosmo
+  # package: preferably
+  # params:
+  #   package: preferably
+
+navbar:
+  title: "CORI DB"
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Functions"
+      href: reference/index.html
+  right:
+    - icon: fab fa-github
+      href: https://github.com/ruralinnovation/cori_db
+
+
+reference:
+  - title: "Setup and Access"
+    desc: >
+      Functions for setting up a database connection
+    contents:
+      - set_db_credentials
+      - connect_to_db
+  - title: "Explore"
+    desc: >
+      Functions to search tables on the database
+    contents:
+      - search_db_tables
+      - get_db_column_names
+  - title: "Read and Write Data"
+    desc: >
+      Functions for reading and writing data
+    contents:
+      - read_db
+      - read_acs
+      - read_sql
+      - write_db
+  - title: "Metadata"
+    desc: >
+      Functions for creating, storing, and loading metadata
+    contents:
+      - create_metadata_tables
+      - update_metadata
+      - load_session_metadata
+  - title: "SQL Helpers"
+    desc: >
+      Helper functions for running SQL code from an R session
+    contents:
+      - execute_on_postgres
+      - make_aliased_query
+      - update_join
+
