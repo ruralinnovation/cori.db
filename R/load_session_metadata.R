@@ -15,12 +15,14 @@ load_session_metadata <- function(){
   session_metadata <- lapply(metadata_types, function(type){
 
     files <- list.files(paste(tempdir(), 'session_metadata',type, sep = "/"))
-    file_paths <- paste(tempdir(), 'session_metadata',type, files, sep = "/")
 
-    if(length(file_paths) == 0){
+    if(length(files) == 0){
+
       no_metadata <- data.frame(meta = "Metadata unavailable")
       return(no_metadata)
     }
+
+    file_paths <- paste(tempdir(), 'session_metadata',type, files, sep = "/")
 
     res <- dplyr::bind_rows(lapply(file_paths, data.table::fread))
 
