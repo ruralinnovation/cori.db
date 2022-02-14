@@ -17,62 +17,35 @@
 #' create_metadata_tables(mtcars, output_csv = FALSE)
 #' }
 #'
-#' @importFrom data.table data.table
+#' @importFrom data.table as.data.table
 #' @importFrom data.table fwrite
 #' @importFrom crayon green
 #' @importFrom cli symbol
+#' @importFrom cori.utils get_params
 #'
 create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE, output_csv = TRUE){
 
+  # nse check cleanup
+  ncols <- nrows <- last_update <- column_name <- `:=` <- NULL
+
   stopifnot(is.logical(output_csv))
 
-  if (is.null(data_tbl)){
+  pkg_params <- cori.utils::get_params('metadata', system.file("params", "package_params.yml", package = 'cori.db', mustWork = TRUE))
 
-    field_meta <- data.table::data.table(table_name = "",
-                                         column_name = "",
-                                         description = "",
-                                         source_code = ""
-    )
+  field_meta <- data.table::as.data.table(data.frame(pkg_params$field_metadata))
+  table_meta <- data.table::as.data.table(data.frame(pkg_params$table_metadata))
+  source_meta <- data.table::as.data.table(data.frame(pkg_params$source_metadata))
 
-    table_meta <- data.table::data.table(table_name = "",
-                                         table_schema = "",
-                                         table_description = "",
-                                         last_update = as.character(Sys.Date()),
-                                         ncols = "",
-                                         nrows = ""
+  if (!is.null(data_tbl)){
 
-    )
+    field_meta <- data.table::as.data.table(dplyr::add_row(field_meta, column_name = names(data_tbl)))
+    field_meta <- field_meta[column_name != ""]
 
-  } else {
-
-    field_meta <- data.table::data.table(table_name = "",
-                                         column_name = names(data_tbl),
-                                         description = "",
-                                         source_code = ""
-    )
-
-    table_meta <- data.table::data.table(table_name = "",
-                                         table_schema = "",
-                                         table_description = "",
-                                         last_update = as.character(Sys.Date()),
-                                         ncols = ncol(data_tbl),
-                                         nrows = nrow(data_tbl)
-
-    )
+    table_meta[, last_update := as.character(Sys.Date())]
+    table_meta[, ncols := ncol(data_tbl)]
+    table_meta[, nrows := nrow(data_tbl)]
 
   }
-
-
-
-  source_meta <- data.table::data.table(source_code = "",
-                                        source_name = "",
-                                        table_name = "",
-                                        table_schema = "",
-                                        source_year = "",
-                                        description = "",
-                                        update_cadence = ""
-
-  )
 
   out <- list(field_metadata = field_meta,
               table_metadata = table_meta

@@ -22,4 +22,7 @@ Imports:
     crayon,
     cli,
     utils,
-    dplyr
+    dplyr,
+    cori.utils
+Remotes:
+    ruralinnovation/cori_utils

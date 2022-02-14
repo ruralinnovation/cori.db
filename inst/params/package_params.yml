@@ -1,0 +1,23 @@
+default:
+  metadata:
+    source_metadata:
+      source_code: ''
+      source_name: ''
+      table_name: ''
+      table_schema: ''
+      source_year: ''
+      description: ''
+      update_cadence: ''
+    field_metadata:
+      table_name: ''
+      column_name: ''
+      description: ''
+      source_code: ''
+      source_year: ''
+    table_metadata:
+      table_name: ''
+      table_schema: ''
+      table_description: ''
+      last_update: ''
+      ncols: ''
+      nrows: ''
