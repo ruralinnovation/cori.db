@@ -21,7 +21,7 @@
 #' @importFrom data.table fwrite
 #' @importFrom crayon green
 #' @importFrom cli symbol
-#' @importFrom cori.utils get_params
+#' @importFrom config get
 #'
 create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE, output_csv = TRUE){
 
@@ -30,7 +30,7 @@ create_metadata_tables <- function(data_tbl = NULL, source_meta_template = FALSE
 
   stopifnot(is.logical(output_csv))
 
-  pkg_params <- cori.utils::get_params('metadata', system.file("params", "package_params.yml", package = 'cori.db', mustWork = TRUE))
+  pkg_params <- config::get('metadata', file = system.file("params", "package_params.yml", package = 'cori.db', mustWork = TRUE))
 
   field_meta <- data.table::as.data.table(data.frame(pkg_params$field_metadata))
   table_meta <- data.table::as.data.table(data.frame(pkg_params$table_metadata))

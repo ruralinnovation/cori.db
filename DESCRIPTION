@@ -22,7 +22,5 @@ Imports:
     crayon,
     cli,
     utils,
-    dplyr,
-    cori.utils
-Remotes:
-    ruralinnovation/cori_utils
+    dplyr
+
