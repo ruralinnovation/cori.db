@@ -23,11 +23,12 @@ update_metadata <- function(con, field_meta = NULL, table_meta = NULL, source_me
     stop_quietly("No metadata provided to update")
   }
 
+  pkg_params <- config::get('metadata', file = system.file("params", "package_params.yml", package = 'cori.db', mustWork = TRUE))
   # check for name mismatches -----------------------------------------------
 
-  field_cols <- c("table_name", "column_name", "description", "source_code")
-  table_cols <- c("table_name", "table_schema", "table_description", "last_update", 'ncols', 'nrows')
-  source_cols <- c("source_code", "source_name", "table_name", "table_schema", "source_year", "description", "update_cadence")
+  field_cols <- names(pkg_params$field_metadata)
+  table_cols <- names(pkg_params$table_metadata)
+  source_cols <- names(pkg_params$source_metadata)
 
   if (!is.null(field_meta)){
 
