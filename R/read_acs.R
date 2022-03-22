@@ -17,7 +17,7 @@
 read_acs <- function(con, variables, year = NULL, geography = 'county', tidy = TRUE){
 
   # match geo arg
-  geo <- match.arg(geography, c('county', 'place'))
+  geo <- match.arg(geography, c('county', 'place', 'state', 'us'))
   # get table name
   tbl <- sprintf("acs_5_yr_%s", geo)
 
