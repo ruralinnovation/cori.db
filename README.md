@@ -18,7 +18,7 @@ __If you are connecting from a personal computer, your IP address will need to b
 
 ### With environment variable set up
 
-```
+```r
 # connect to schema sch_source
 con <- connect_to_db("sch_source")
 
@@ -29,7 +29,7 @@ DBI::dbDisconnect(con)
 
 ### Using a config file
 
-```
+```r
 # connect to schema sch_source
 con <- connect_to_db("sch_source", config_name = 'db_credentials', config_file = '../base/config.yml')
 
