@@ -10,7 +10,9 @@
 #' @return A pqconnection object
 #' @export
 #'
-connect_to_db <- function(schema, host = "cori-risi.c6zaibvi9wyg.us-east-1.rds.amazonaws.com", dbname = "data", port = 5432, config_name = NULL, config_file = "../base/config.yml"){
+connect_to_db <- function(schema, 
+                          host = "cori-risi-ad-postgresql.c6zaibvi9wyg.us-east-1.rds.amazonaws.com", 
+                          dbname = "data", port = 5432, config_name = NULL, config_file = "../base/config.yml") {
 
   if (!is.null(config_name)){
 
