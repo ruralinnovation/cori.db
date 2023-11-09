@@ -1,5 +1,14 @@
-^.*\.Rproj$
+^cori\.db\.Rproj$
 ^\.Rproj\.user$
-^_pkgdown\.yml$
+^\.R*$
+^.*\.Rproj$
+^\.git$
+^\.github$
+^\.gitignore$
+^\.idea$
 ^docs$
 ^pkgdown$
+^renv$
+^renv\.lock$
+^coriverse\.Rproj$
+^_pkgdown\.yml

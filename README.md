@@ -16,6 +16,8 @@ __If you are connecting from a personal computer, your IP address will need to b
 
 ## Connecting to the database with `connect_to_db()`
 
+So, this is how the functions work...
+
 ### With environment variable set up
 
 ```r
@@ -36,4 +38,11 @@ con <- connect_to_db("sch_source", config_name = 'db_credentials', config_file =
 # always end scripts by disconnecting from the database!
 DBI::dbDisconnect(con)
 
+```
+
+## Setup for Development
+
+Once you have all of the dependencies installed, to build and install this package from the local project directory, run:
+```r
+pkgbuild::clean_dll(); pkgbuild::compile_dll(); devtools::document(); devtools::check(); devtools::install();
 ```
