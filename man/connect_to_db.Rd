@@ -6,7 +6,7 @@
 \usage{
 connect_to_db(
   schema,
-  host = "cori-risi.c6zaibvi9wyg.us-east-1.rds.amazonaws.com",
+  host = "cori-risi-ad-postgresql.c6zaibvi9wyg.us-east-1.rds.amazonaws.com",
   dbname = "data",
   port = 5432,
   config_name = NULL,
