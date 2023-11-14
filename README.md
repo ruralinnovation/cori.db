@@ -12,7 +12,7 @@ __If you are connecting from a personal computer, your IP address will need to b
 
 1. Run `set_db_credentials('user_name_here', 'password_here')` Valid DB user and password information is available in `/data/Github/base/config.yml` on the RStudio Server
 2. Restart R
-3. Run `Sys.getenv('DB_USER_AD')`. If the above steps were successful, it should return the value of DB_USER you set in Step 1
+3. Run `Sys.getenv('DATABASE_USER_AD')`. If the above steps were successful, it should return the value of DB_USER you set in Step 1
 
 ## Connecting to the database with `connect_to_db()`
 
@@ -21,7 +21,7 @@ So, this is how the functions work...
 ### With environment variable set up
 
 ```r
-# connect to schema sch_source
+# connect to schema metadata
 con <- connect_to_db("metadata")
 
 # always end scripts by disconnecting from the database!
