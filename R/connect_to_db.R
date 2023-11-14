@@ -25,8 +25,8 @@ connect_to_db <- function(schema,
 
   } else {
 
-    uname <- Sys.getenv("DB_USER_AD")
-    pwd   <- Sys.getenv("DB_PWD_AD")
+    uname <- Sys.getenv("DATABASE_USER_AD")
+    pwd   <- Sys.getenv("DATABASE_PASSWORD_AD")
 
   }
 
