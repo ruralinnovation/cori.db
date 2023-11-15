@@ -39,7 +39,9 @@ connect_to_db <- function(schema,
     dbname   = dbname,
     host     = host,
     port     = port,
-    options  = sprintf('-c search_path=%s', paste0(schema, collapse = ","))
+    options  = sprintf('-c search_path=%s'
+                       , paste0(c(schema, '"$user"', 'public', 'postgis', 'contrib')
+                                , collapse = ","))
 
   )
 
