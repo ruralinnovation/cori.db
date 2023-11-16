@@ -1,7 +1,7 @@
 Package: cori.db
 Type: Package
 Title: DB and SQL Helper Functions
-Version: 0.1.1
+Version: 0.2.0
 Authors@R: c(person(given="Matt", family="Rogers", role = c("cre","aut"), email="matt.rogers@ruralinnovation.us"), 
     person(given="Drew", family="Rosebush", role =c("ctb"), email="drew.rosebush@ruralinnovation.us"))
 Maintainer: Matt Rogers <matt.rogers@ruralinnovation.us>
