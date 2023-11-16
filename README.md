@@ -8,6 +8,8 @@ Part of the [coriverse](https://github.com/ruralinnovation/wiki)
 
 __If you are connecting from a personal computer, your IP address will need to be whitelisted before you will be able to connect. Contact Olivier Leroy or John Hall.__
 
+Before using `cori.db`, you must set the environment variables `DATABASE_USER_AD` and `DATABASE_PASSWORD_AD` with the values of your database username and password, respectively, in either a local `.Renviron` file or your shell's profile (i.e. `~/.bash_profile` or `~/.profile`). The instructions in the following section provide a convenient function to do this from within `R`.
+
 ## Setting up environment variables for coriverse `connect_to_db()` in RStudio 
 
 1. Run `set_db_credentials('user_name_here', 'password_here')` Valid DB user and password information is available in `/data/Github/base/config.yml` on the RStudio Server
