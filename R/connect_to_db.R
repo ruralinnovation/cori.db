@@ -30,7 +30,6 @@ connect_to_db <- function(schema,
 
   }
 
-
   con  <- DBI::dbConnect(
 
     RPostgres::Postgres(),
@@ -42,8 +41,9 @@ connect_to_db <- function(schema,
     options  = sprintf('-c search_path=%s'
                        , paste0(c(schema, '"$user"', 'public', 'postgis', 'contrib')
                                 , collapse = ","))
-
   )
+
+  DBI::dbExecute(con, "set role mda_team;")
 
   return(con)
 }
