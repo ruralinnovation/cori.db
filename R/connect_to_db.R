@@ -43,7 +43,7 @@ connect_to_db <- function(schema,
                                 , collapse = ","))
   )
 
-  DBI::dbExecute(con, "set role mda_team;")
+  try(DBI::dbExecute(con, "set role mda_team;"))
 
   return(con)
 }
