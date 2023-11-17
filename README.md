@@ -2,7 +2,7 @@
 
 ![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)
 
-Part of the [coriverse](https://github.com/ruralinnovation/wiki)
+Note: _Before installing and using the `cori.db` package, please refer to the [coriverse wiki](https://github.com/ruralinnovation/wiki) for instructions on setting up your local environment to install packages from private Github repositories._
 
 `cori.db` is an internal R package for all things database connection and SQL function related.
 
