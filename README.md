@@ -12,7 +12,7 @@ Before using `cori.db`, you must set the environment variables `DATABASE_USER_AD
 
 ## Setting up environment variables for coriverse `connect_to_db()` in RStudio 
 
-1. Run `set_db_credentials('user_name_here', 'password_here')` Valid DB user and password information is available in `/data/Github/base/config.yml` on the RStudio Server
+1. Run `set_db_credentials('user_name_here', 'password_here')` 
 2. Restart R
 3. Run `Sys.getenv('DATABASE_USER_AD')`. If the above steps were successful, it should return the value of DB_USER you set in Step 1
 

@@ -8,9 +8,7 @@ connect_to_db(
   schema,
   host = "cori-risi-ad-postgresql.c6zaibvi9wyg.us-east-1.rds.amazonaws.com",
   dbname = "data",
-  port = 5432,
-  config_name = NULL,
-  config_file = "../base/config.yml"
+  port = 5432
 )
 }
 \arguments{
@@ -21,10 +19,6 @@ connect_to_db(
 \item{dbname}{Database name to connect to. Defaults to main MDA Postgres database}
 
 \item{port}{Port name to connect to. Defaults to port for main MDA Postgres database}
-
-\item{config_name}{An optional name of a set of credentials in a config file. Must contain fields 'user' and 'password'. Alternatively, set the environment variables 'DB_USER' and 'DB_PWD' in R Studio.}
-
-\item{config_file}{Path to the config file to use, if not using environment variables. Defaults to "../base/config.yml"}
 }
 \value{
 A pqconnection object
