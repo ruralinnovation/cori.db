@@ -1,4 +1,7 @@
-#' Install aws credentials in your .Renviron file
+#' Install aws credentials in your .Renviron file and
+#' load credentials into the current environment.
+#' This actions will overwrite any values currently
+#' stored in AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 #'
 #' @param keyID A valid Key ID
 #' @param accesKey A valid Access key
@@ -12,6 +15,20 @@
 #' @importFrom crayon red
 #' @importFrom cli symbol
 #'
+#' @examples
+#'
+#' \dontrun{
+#' # Initilialize S3 credentials (this only needs to be done once for a given project)
+#' cori.db::set_aws_credentials(keyID = "###", accesKey = "###")
+#'
+#' # Configure duckdb connection with current credentials
+#' duckdb::dbSendQuery(con, "CREATE OR REPLACE SECRET s3_secret (
+#'     TYPE S3,
+#'     PROVIDER CREDENTIAL_CHAIN,
+#'     CHAIN 'env;config'
+#' );")
+#' }
+#'
 
 set_aws_credentials <- function(keyID, accesKey,
                                 region = "us-east-1",
@@ -21,17 +38,17 @@ set_aws_credentials <- function(keyID, accesKey,
   if (install) {
 
     home <- Sys.getenv("HOME")
-    renv <- file.path(home, ".Renviron")
+    renviron <- file.path(home, ".Renviron")
 
-    if (!file.exists(renv)){
+    if (!file.exists(renviron)){
 
-      file.create(renv)
+      file.create(renviron)
 
     } else {
       # Backup original .Renviron before doing anything else here.
-      file.copy(renv, file.path(home, ".Renviron_backup"))
+      file.copy(renviron, file.path(home, ".Renviron_backup"))
 
-      tv <- readLines(renv)
+      tv <- readLines(renviron)
 
       if(any(grepl("AWS_ACCESS_KEY_ID", tv))) {
 
@@ -45,10 +62,10 @@ set_aws_credentials <- function(keyID, accesKey,
 
           cat("Your original .Renviron will be backed up and stored in your R HOME directory if needed.")
 
-          oldenv <- utils::read.table(renv, stringsAsFactors = FALSE)$V1
+          oldenv <- utils::read.table(renviron, stringsAsFactors = FALSE)$V1
           newenv <- oldenv[!grepl("AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY", oldenv)]
 
-          utils::write.table(newenv, renv, quote = FALSE, sep = "\n",
+          utils::write.table(newenv, renviron, quote = FALSE, sep = "\n",
                              col.names = FALSE, row.names = FALSE
           )
 
@@ -66,9 +83,12 @@ set_aws_credentials <- function(keyID, accesKey,
     regionconcat <- sprintf("AWS_DEFAULT_REGION='%s'", region)
 
     # Append API key to .Renviron file
-    write(userconcat, renv, sep = "\n", append = TRUE)
-    write(pwdconcat, renv, sep = "\n", append = TRUE)
-    write(regionconcat, renv, sep = "\n", append = TRUE)
+    write(userconcat, renviron, sep = "\n", append = TRUE)
+    write(pwdconcat, renviron, sep = "\n", append = TRUE)
+    write(regionconcat, renviron, sep = "\n", append = TRUE)
+
+    Sys.setenv(AWS_ACCESS_KEY_ID = keyID)
+    Sys.setenv(AWS_SECRET_ACCESS_KEY = accesKey)
 
     cat(crayon::green(cli::symbol$tick),
         paste("Your AWS key ID  and secret key",

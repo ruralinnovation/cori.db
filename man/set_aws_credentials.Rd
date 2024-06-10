@@ -2,7 +2,10 @@
 % Please edit documentation in R/set_aws_credentials.R
 \name{set_aws_credentials}
 \alias{set_aws_credentials}
-\title{Install aws credentials in your .Renviron file}
+\title{Install aws credentials in your .Renviron file and
+load credentials into the current environment.
+This actions will overwrite any values currently
+stored in AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.}
 \usage{
 set_aws_credentials(keyID, accesKey, region = "us-east-1", install = TRUE)
 }
@@ -19,5 +22,23 @@ set_aws_credentials(keyID, accesKey, region = "us-east-1", install = TRUE)
 keyID, accesKey and region, invisibly
 }
 \description{
-Install aws credentials in your .Renviron file
+Install aws credentials in your .Renviron file and
+load credentials into the current environment.
+This actions will overwrite any values currently
+stored in AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
+}
+\examples{
+
+\dontrun{
+# Initilialize S3 credentials (this only needs to be done once for a given project)
+cori.db::set_aws_credentials(keyID = "###", accesKey = "###")
+
+# Configure duckdb connection with current credentials
+duckdb::dbSendQuery(con, "CREATE OR REPLACE SECRET s3_secret (
+    TYPE S3,
+    PROVIDER CREDENTIAL_CHAIN,
+    CHAIN 'env;config'
+);")
+}
+
 }
