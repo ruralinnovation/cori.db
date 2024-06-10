@@ -27,3 +27,18 @@ load credentials into the current environment.
 This actions will overwrite any values currently
 stored in AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 }
+\examples{
+
+\dontrun{
+# Initilialize S3 credentials (this only needs to be done once for a given project)
+cori.db::set_aws_credentials(keyID = "###", accesKey = "###")
+
+# Configure duckdb connection with current credentials
+duckdb::dbSendQuery(con, "CREATE OR REPLACE SECRET s3_secret (
+    TYPE S3,
+    PROVIDER CREDENTIAL_CHAIN,
+    CHAIN 'env;config'
+);")
+}
+
+}

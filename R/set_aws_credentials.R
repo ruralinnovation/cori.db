@@ -15,6 +15,20 @@
 #' @importFrom crayon red
 #' @importFrom cli symbol
 #'
+#' @examples
+#'
+#' \dontrun{
+#' # Initilialize S3 credentials (this only needs to be done once for a given project)
+#' cori.db::set_aws_credentials(keyID = "###", accesKey = "###")
+#'
+#' # Configure duckdb connection with current credentials
+#' duckdb::dbSendQuery(con, "CREATE OR REPLACE SECRET s3_secret (
+#'     TYPE S3,
+#'     PROVIDER CREDENTIAL_CHAIN,
+#'     CHAIN 'env;config'
+#' );")
+#' }
+#'
 
 set_aws_credentials <- function(keyID, accesKey,
                                 region = "us-east-1",
