@@ -1,7 +1,7 @@
 #' Listing s3 bucket CORI draft
 #' 
 
-get_me_s3_table <- function() {
+list_all_s3 <- function() {
   s3 <- paws::s3()
   list_s3  <- s3$list_buckets()
   bucket <- list_s3[["Buckets"]]

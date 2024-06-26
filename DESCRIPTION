@@ -22,4 +22,8 @@ Imports:
     crayon,
     cli,
     utils,
-    dplyr
+    dplyr,
+    paws
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
