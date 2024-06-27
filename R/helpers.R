@@ -102,3 +102,22 @@ pull_metadata <- function(con, table){
   }
   message(paste("Metadata for", table,"has been stored in a temp directory\n"))
 }
+
+
+# test if aws credential are set
+
+has_aws_credentials <- function() {
+
+  home <- Sys.getenv("HOME")
+  renviron <- file.path(home, ".Renviron")
+
+  if (!file.exists(renviron)) {
+    return(FALSE)
+    } else {
+
+      if (nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0) return(FALSE)
+      if (nchar(Sys.getenv("AWS_SECRET_ACCESS_KEY")) == 0) return(FALSE)
+      if (nchar(Sys.getenv("AWS_DEFAULT_REGION")) == 0) return(FALSE)
+  }
+  return(TRUE)
+}
