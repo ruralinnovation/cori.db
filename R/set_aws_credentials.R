@@ -4,11 +4,11 @@
 #' stored in AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 #'
 #' @param keyID A valid Key ID
-#' @param accesKey A valid Access key
+#' @param accessKey A valid Access key
 #' @param region A valid AWS region (default set )
 #' @param install If TRUE, save credentials to .Renviron. Otherwise, set per session.
 #'
-#' @return keyID, accesKey and region, invisibly
+#' @return keyID, accessKey and region, invisibly
 #' @export
 #'
 #' @importFrom crayon green
@@ -19,7 +19,7 @@
 #'
 #' \dontrun{
 #' # Initilialize S3 credentials (this only needs to be done once for a given project)
-#' cori.db::set_aws_credentials(keyID = "###", accesKey = "###")
+#' cori.db::set_aws_credentials(keyID = "###", accessKey = "###")
 #'
 #' # Configure duckdb connection with current credentials
 #' duckdb::dbSendQuery(con, "CREATE OR REPLACE SECRET s3_secret (
@@ -30,7 +30,7 @@
 #' }
 #'
 
-set_aws_credentials <- function(keyID, accesKey,
+set_aws_credentials <- function(keyID, accessKey,
                                 region = "us-east-1",
                                 install = TRUE) {
   stopifnot(is.logical(install))
@@ -79,7 +79,7 @@ set_aws_credentials <- function(keyID, accesKey,
     }
 
     userconcat <- sprintf("AWS_ACCESS_KEY_ID='%s'", keyID)
-    pwdconcat <- sprintf("AWS_SECRET_ACCESS_KEY='%s'", accesKey)
+    pwdconcat <- sprintf("AWS_SECRET_ACCESS_KEY='%s'", accessKey)
     regionconcat <- sprintf("AWS_DEFAULT_REGION='%s'", region)
 
     # Append API key to .Renviron file
@@ -88,7 +88,7 @@ set_aws_credentials <- function(keyID, accesKey,
     write(regionconcat, renviron, sep = "\n", append = TRUE)
 
     Sys.setenv(AWS_ACCESS_KEY_ID = keyID)
-    Sys.setenv(AWS_SECRET_ACCESS_KEY = accesKey)
+    Sys.setenv(AWS_SECRET_ACCESS_KEY = accessKey)
 
     cat(crayon::green(cli::symbol$tick),
         paste("Your AWS key ID  and secret key",
@@ -96,12 +96,12 @@ set_aws_credentials <- function(keyID, accesKey,
               'and can be accessed by Sys.getenv("AWS_ACCESS_KEY_ID")',
               'and Sys.getenv("AWS_SECRET_ACCESS_KEY").',
               '\nTo use now, restart R or run `readRenviron("~/.Renviron")`'))
-    return(invisible(c(keyID, accesKey)))
+    return(invisible(c(keyID, accessKey)))
 
   } else {
 
     Sys.setenv(AWS_ACCESS_KEY_ID = keyID)
-    Sys.setenv(AWS_SECRET_ACCESS_KEY = accesKey)
+    Sys.setenv(AWS_SECRET_ACCESS_KEY = accessKey)
 
     cat(crayon::green(cli::symbol$tick),
         paste("AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY",
