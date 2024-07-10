@@ -20,7 +20,7 @@ list_bucket <- function(bucket_name) {
 
   first_page <- paws::paginate(s3$list_objects_v2(Bucket = bucket_name))
 
-  if (!first_page[[1]]["IsTruncated"]) {
+  if (! first_page[[1]][["IsTruncated"]]) {
 
     gimme_me_key <- function(x) x[["Key"]]
     gimme_me_last_modified <- function(x) {x[["LastModified"]]}
