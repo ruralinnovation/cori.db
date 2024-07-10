@@ -1,3 +1,20 @@
+has_aws_credentials <- function() {
+
+  home <- Sys.getenv("HOME")
+  renviron <- file.path(home, ".Renviron")
+
+  if (!file.exists(renviron)) {
+    return(FALSE)
+  } else {
+
+    if (nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0) return(FALSE)
+    if (nchar(Sys.getenv("AWS_SECRET_ACCESS_KEY")) == 0) return(FALSE)
+    if (nchar(Sys.getenv("AWS_DEFAULT_REGION")) == 0) return(FALSE)
+  }
+
+  return(TRUE)
+}
+
 query_db <- function(con, query){
   DBI::dbClearResult(DBI::dbSendQuery(con, query))
 }
