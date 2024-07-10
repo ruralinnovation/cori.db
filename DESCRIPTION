@@ -22,4 +22,5 @@ Imports:
     crayon,
     cli,
     utils,
-    dplyr
+    dplyr,
+    paws (>= 0.4)
