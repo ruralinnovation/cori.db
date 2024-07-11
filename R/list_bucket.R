@@ -1,37 +1,38 @@
 #' List every "keys" from a bucket
-#' 
+#'
 #' @param bucket_name string, example "test-coridata""
 #'
-#' @return a data frame with ...
-#' @export
+#' @return a data frame with a key and last_modified columns 
 #'
 #' @import paws
-#' 
+#'
 #' @examples
 #'
 #' \dontrun{
-#' # do an example
+#'  s3_asset <- list_bucket("test-coridata")
 #' }
 #'
 
 list_bucket <- function(bucket_name) {
 
+  # convenience functions
+  gimme_me_key <- function(x) x[["Key"]]
+  gimme_me_last_modified <- function(x) x[["LastModified"]]
+
   s3 <- paws::s3()
 
-  first_page <- paws::paginate(s3$list_objects_v2(Bucket = bucket_name))
+  n_page <- paws::paginate(s3$list_objects_v2(Bucket = bucket_name))
 
-  if (! first_page[[1]][["IsTruncated"]]) {
+  flatten_one_level <- unlist(n_page, recursive = FALSE)
+  get_content <-  unlist(
+    flatten_one_level[names(flatten_one_level) == "Contents"],
+    recursive = FALSE, use.names = FALSE)
 
-    gimme_me_key <- function(x) x[["Key"]]
-    gimme_me_last_modified <- function(x) {x[["LastModified"]]}
-
-    df_temp <- data.frame(
-        key = do.call(rbind, lapply(first_page[[1]][["Contents"]], gimme_me_key)),
-        last_modified = as.POSIXlt(do.call(rbind, lapply(first_page[[1]][["Contents"]], gimme_me_last_modified)))
-    )
-
-    return(df_temp)
-  } else {
-    print("more than 1K keys")
-  }
+  df_temp <- data.frame(
+    key = do.call(rbind, lapply(get_content, gimme_me_key)),
+    last_modified = as.POSIXlt(do.call(rbind,
+                                       lapply(get_content,
+                                              gimme_me_last_modified)))
+  )
+  return(df_temp)
 }

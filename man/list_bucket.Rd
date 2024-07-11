@@ -10,7 +10,7 @@ list_bucket(bucket_name)
 \item{bucket_name}{string, example "test-coridata""}
 }
 \value{
-a data frame with ...
+a data frame with a key and last_modified columns
 }
 \description{
 List every "keys" from a bucket
@@ -18,7 +18,7 @@ List every "keys" from a bucket
 \examples{
 
 \dontrun{
-# do an example
+ s3_asset <- list_bucket("test-coridata")
 }
 
 }
