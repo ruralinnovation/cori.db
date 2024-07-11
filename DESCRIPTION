@@ -23,7 +23,7 @@ Imports:
     cli,
     utils,
     dplyr,
-    paws
+    paws (>= 0.4)
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
