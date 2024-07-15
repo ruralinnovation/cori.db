@@ -6,6 +6,8 @@
 #'
 #' @import paws
 #'
+#' @export
+#'
 #' @examples
 #'
 #' \dontrun{
@@ -13,7 +15,7 @@
 #' }
 #'
 
-list_bucket <- function(bucket_name) {
+list_s3_objects <- function(bucket_name) {
 
   # convenience functions
   gimme_me_key <- function(x) x[["Key"]]
