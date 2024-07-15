@@ -4,7 +4,7 @@
 #'
 #' @export
 #'
-list_s3 <- function() {
+list_s3_buckets <- function() {
 
   if(! has_aws_credentials()) stop("AWS credentials are missing, run set_aws_credentials()")
 

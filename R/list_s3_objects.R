@@ -6,6 +6,8 @@
 #'
 #' @import paws
 #'
+#' @export
+#'
 #' @examples
 #'
 #' \dontrun{
@@ -13,7 +15,9 @@
 #' }
 #'
 
-list_bucket <- function(bucket_name) {
+list_s3_objects <- function(bucket_name) {
+
+  if(! has_aws_credentials()) stop("AWS credentials are missing, run set_aws_credentials()")
 
   # convenience functions
   gimme_me_key <- function(x) x[["Key"]]

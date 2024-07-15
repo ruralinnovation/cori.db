@@ -5,6 +5,6 @@ if (!has_aws_credentials()) {
       } )
 } else {
   test_that("Return a data frame", {
-  expect_equal(is.data.frame(list_s3()), TRUE)
+  expect_equal(is.data.frame(list_s3_buckets()), TRUE)
   })
 }
