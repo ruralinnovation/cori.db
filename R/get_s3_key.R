@@ -22,3 +22,20 @@ get_s3_key <- function(bucket_name, key, file_path, ...) {
     ...
   )
 }
+
+
+#  s3$get_object(
+#    Bucket = "test-coridata",
+#    Key = "blabla.txt"
+#  )
+
+# # return $tagCount 1 but do not show it
+
+# s3$get_object_tagging(
+#   Bucket = "test-coridata",
+#   Key = "blabla.txt"
+# )
+
+# s3$get_bucket_tagging(
+#   Bucket = "test-coridata"
+# )
