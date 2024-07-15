@@ -1,0 +1,31 @@
+# test if aws credential are set
+
+has_aws_credentials <- function() {
+
+  home <- Sys.getenv("HOME")
+  renviron <- file.path(home, ".Renviron")
+
+  if (!file.exists(renviron)) {
+    return(FALSE)
+    } else {
+
+      if (nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0) return(FALSE)
+      if (nchar(Sys.getenv("AWS_SECRET_ACCESS_KEY")) == 0) return(FALSE)
+      if (nchar(Sys.getenv("AWS_DEFAULT_REGION")) == 0) return(FALSE)
+  }
+  return(TRUE)
+}
+
+
+# what is the type of content of an object
+
+get_s3_content_type <- function(bucket_name, key) {
+
+  s3 <- paws::s3()
+
+  head <- s3$head_object(
+    Bucket = bucket_name,
+    Key = key)
+
+  return(head$ContentType)
+}
