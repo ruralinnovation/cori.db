@@ -7,11 +7,11 @@
 get_s3_object(bucket_name, key, file_path, ...)
 }
 \arguments{
-\item{bucket_name}{string, example "test-coridata"}
+\item{bucket_name}{string, a bucket name}
 
-\item{key}{string, object/file that you want tod download example "blabla.txt"}
+\item{key}{string, object/file that you want to download}
 
-\item{file_path}{string, a path where you want the file to be downloaded}
+\item{file_path}{string, a path where you want the file to be downloaded ("~/Documents/my_proj/"")}
 
 \item{...}{other arguments from paws's downloadfile}
 }
@@ -27,7 +27,8 @@ If file_path is not provided it will the object in the curent directory
 \examples{
 
 \dontrun{
- get_s3_key("test-coridata", "blabla.txt", "text.txt")
+ txt <- get_s3_key("test-coridata", "blabla.txt")
+ txt
 }
 
 }
