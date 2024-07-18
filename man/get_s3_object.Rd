@@ -27,7 +27,7 @@ If file_path is not provided it will the object in the curent directory
 \examples{
 
 \dontrun{
- txt <- get_s3_key("test-coridata", "blabla.txt")
+ txt <- get_s3_object("test-coridata", "blabla.txt")
  txt
 }
 

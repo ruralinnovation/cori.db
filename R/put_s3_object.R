@@ -1,12 +1,11 @@
 #' put an a local file into an s3 bucket
 #'
-#'
 #' @param bucket_name string, a bucket name
 #' @param object string, file (path) that you want to upload
 #' @param key string, how will be named the key in s3 bucket, by default same as object
 #' @param ... other arguments from paws's put_object()
 #'
-#' @return return invisibly the path where the file has been downloaded
+#' @return return invisibly the response from AWS
 #'
 #' @export
 #'
@@ -28,11 +27,20 @@ put_s3_object <- function(bucket_name, object, key = object, ...) {
     stop(sprintf("%s is not on the list of curated bucket", bucket_name))
   }
 
+  is_key_already_here <- function(bucket_name, key) {
+    df_key <- list_s3_objects(bucket_name = bucket_name)
+    key %in% df_key[["key"]]
+  }
+
+  if (is_key_already_here(bucket_name, key)) {
+    stop(sprintf("%s already exist in %s", key, bucket_name), call. = FALSE)
+  }
+
   s3 <- paws::s3()
 
-  s3$put_object(
-    Body = object,
-    Bucket = bucket_name,
-    Key = key
-  )
+  response <- s3$put_object(Body = object,
+                            Bucket = bucket_name,
+                            Key = key)
+
+  return(invisible(response))
 }
