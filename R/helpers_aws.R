@@ -29,3 +29,11 @@ get_s3_content_type <- function(bucket_name, key) {
 
   return(head$ContentType)
 }
+
+
+can_i_write_in_that_bucket <- function(bucket_name) {
+  # v1 implementation should go against a list
+  # v2 could use a specific tag 
+  curated_bucket <- c("test-coridata", "fcc-raw-cori")
+  bucket_name %in% curated_bucket
+}
