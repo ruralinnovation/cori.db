@@ -14,7 +14,7 @@
 #' @examples
 #'
 #' \dontrun{
-#'  txt <- get_s3_key("test-coridata", "blabla.txt")
+#'  txt <- get_s3_object("test-coridata", "blabla.txt")
 #'  txt
 #' }
 #'
