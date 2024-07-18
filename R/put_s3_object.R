@@ -27,11 +27,6 @@ put_s3_object <- function(bucket_name, object, key = object, ...) {
     stop(sprintf("%s is not on the list of curated bucket", bucket_name))
   }
 
-  is_key_already_here <- function(bucket_name, key) {
-    df_key <- list_s3_objects(bucket_name = bucket_name)
-    key %in% df_key[["key"]]
-  }
-
   if (is_key_already_here(bucket_name, key)) {
     stop(sprintf("%s already exist in %s", key, bucket_name), call. = FALSE)
   }

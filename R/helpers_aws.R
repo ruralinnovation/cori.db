@@ -36,3 +36,8 @@ can_i_write_in_that_bucket <- function(bucket_name) {
   curated_bucket <- c("test-coridata", "fcc-raw-cori")
   bucket_name %in% curated_bucket
 }
+
+is_key_already_here <- function(bucket_name, key) {
+  df_key <- list_s3_objects(bucket_name = bucket_name)
+  key %in% df_key[["key"]]
+}
