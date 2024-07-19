@@ -4,14 +4,14 @@
 \alias{put_s3_object}
 \title{put an a local file into an s3 bucket}
 \usage{
-put_s3_object(bucket_name, object, key = object, ...)
+put_s3_object(bucket_name, key, file_path, ...)
 }
 \arguments{
 \item{bucket_name}{string, a bucket name}
 
-\item{object}{string, file (path) that you want to upload}
+\item{key}{string, how will be named the key in s3 bucket}
 
-\item{key}{string, how will be named the key in s3 bucket, by default same as object}
+\item{file_path}{string, file (path) that you want to upload}
 
 \item{...}{other arguments from paws's put_object()}
 }
@@ -24,7 +24,7 @@ put an a local file into an s3 bucket
 \examples{
 
 \dontrun{
- txt <- put_s3_object("test-coridata", "blabla.txt")
+ txt <- put_s3_object("test-coridata", "blabla.txt" ,"blabla.txt")
 see what it returns
 }
 

@@ -1,8 +1,8 @@
 #' put an a local file into an s3 bucket
 #'
 #' @param bucket_name string, a bucket name
-#' @param key string, how will be named the key in s3 bucket, by default same as object
-#' @param object string, file (path) that you want to upload
+#' @param key string, how will be named the key in s3 bucket
+#' @param file_path string, file (path) that you want to upload
 #' @param ... other arguments from paws's put_object()
 #'
 #' @return return invisibly the response from AWS
@@ -12,12 +12,12 @@
 #' @examples
 #'
 #' \dontrun{
-#'  txt <- put_s3_object("test-coridata", "blabla.txt")
+#'  txt <- put_s3_object("test-coridata", "blabla.txt" ,"blabla.txt")
 #' see what it returns
 #' }
 #'
 
-put_s3_object <- function(bucket_name, key, object, ...) {
+put_s3_object <- function(bucket_name, key, file_path, ...) {
 
   if (! has_aws_credentials()) {
     stop("AWS credentials are missing, run set_aws_credentials()")
@@ -33,9 +33,10 @@ put_s3_object <- function(bucket_name, key, object, ...) {
 
   s3 <- paws::s3()
 
-  response <- s3$put_object(Body = object,
+  response <- s3$put_object(Body = file_path,
                             Bucket = bucket_name,
-                            Key = key)
+                            Key = key,
+                            ...)
 
   return(invisible(response))
 }
