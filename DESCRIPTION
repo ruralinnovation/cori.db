@@ -1,11 +1,13 @@
 Package: cori.db
 Type: Package
-Title: DB and SQL Helper Functions
-Version: 0.2.1
-Authors@R: c(person(given="Matt", family="Rogers", role = c("cre","aut"), email="matt.rogers@ruralinnovation.us"), 
-    person(given="Drew", family="Rosebush", role =c("ctb"), email="drew.rosebush@ruralinnovation.us"))
+Title: DB, SQL and S3 Helper Functions
+Version: 0.3.0
+Authors@R: c(person(given="Matt", family="Rogers", role=c("cre","aut"), email="matt.rogers@ruralinnovation.us"), 
+    person(given="Drew", family="Rosebush", role=c("ctb"), email="drew.rosebush@ruralinnovation.us"), 
+    person(given="Olivier", family="Leroy", role=c("aut"), email="olivier.leroy@ruralinnovation.us"),
+    person(given="John", family="Hall", role=c("ctb"), email="john.hall@ruralinnovation.us"))
 Maintainer: Matt Rogers <matt.rogers@ruralinnovation.us>
-Description: Functions for connecting to and working with the CORI Postgres DB.
+Description: Functions for connecting to and working with data storage.
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
