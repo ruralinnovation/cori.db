@@ -42,6 +42,17 @@ reference:
       - read_acs
       - read_sql
       - write_db
+  - title: "S3 interaction"
+    desc: >
+      Functions to list buckets, objects and downloading/uploading file
+    contents:
+      - set_aws_credentials
+      - list_s3_buckets
+      - list_s3_objects
+      - get_s3_object
+      - read_s3_object
+      - put_s3_object
+      - write_s3_object
   - title: "Metadata"
     desc: >
       Functions for creating, storing, and loading metadata
