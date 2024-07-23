@@ -52,16 +52,6 @@ con <- connect_to_db("metadata")
 DBI::dbDisconnect(con)
 ```
 
-### Using a config file
-
-```r
-# connect to schema sch_metadata
-con <- connect_to_db("metadata", config_name = 'db_credentials', config_file = '../base/config.yml')
-
-# always end scripts by disconnecting from the database!
-DBI::dbDisconnect(con)
-```
-
 ## S3 functions:
 
 S3 interactions is still in a prototype mode, some functions cand their arguments could change as needed.
