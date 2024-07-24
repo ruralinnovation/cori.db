@@ -15,7 +15,7 @@
 #' @examples
 #'
 #' \dontrun{
-#'  put_s3_object("test-coridata", cars, "cars.csv")
+#'  write_s3_object("test-coridata", cars, "messy-data/cars.csv")
 #' }
 #'
 
@@ -36,7 +36,7 @@ write_s3_object <- function(bucket_name, data_frame, key, ...) {
 
   write.csv(data_frame, temp_file,  row.names = FALSE, ...)
 
-  put_s3_object(bucket_name,
-                object = temp_file, key = key)
+  put_s3_object(file_path = temp_file,
+                bucket_name = bucket_name, key = key)
 
 }

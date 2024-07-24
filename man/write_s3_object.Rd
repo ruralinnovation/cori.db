@@ -27,7 +27,7 @@ it is using tempfile() shenanigans
 \examples{
 
 \dontrun{
- put_s3_object("test-coridata", cars, "cars.csv")
+ write_s3_object("test-coridata", cars, "messy-data/cars.csv")
 }
 
 }
