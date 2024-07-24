@@ -34,6 +34,7 @@ reference:
     contents:
       - search_db_tables
       - get_db_column_names
+      - schema_size_db
   - title: "Read and Write Data"
     desc: >
       Functions for reading and writing data
