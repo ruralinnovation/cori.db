@@ -6,7 +6,7 @@ Note: _Before installing and using the `cori.db` package, please refer to the [c
 
 `cori.db` is an internal R package for all things database connection, SQL function related and AWS S3.
 
-It can be installed with (require `GITHUB_PAT`):
+It can be installed with (requires `GITHUB_PAT`):
 
 ``` r
 # install.packages("devtools")
@@ -19,11 +19,9 @@ Before using `cori.db`, you must set the environment variables for our Database 
 
 For the database you need: `DATABASE_USER_AD` and `DATABASE_PASSWORD_AD` with the values of your database username and password, respectively, in either a local `.Renviron` file (or your shell's profile i.e. `~/.bash_profile` or `~/.profile`).
 
-On the AWS side you need `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION` and can get your access get from AWS.
+To use any of the S3 functions, you will need to set environment variables that represent your AWS credentials, including `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION`. The instructions in the following section provide a convenient function to do this from within `R`.
 
- . The instructions in the following section provide a convenient function to do this from within `R`.
-
-## Setting up environment variables for coriverse  in RStudio 
+## Setting up environment variables for coriverse in RStudio 
 
 ### Connecting to the DB with `connect_to_db()`
 
