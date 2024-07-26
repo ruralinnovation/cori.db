@@ -42,4 +42,4 @@ vignettes/*.pdf
 .Renviron
 
 # docs generated from pkgdown
-docs
+docs/

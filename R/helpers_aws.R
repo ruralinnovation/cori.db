@@ -41,3 +41,24 @@ is_key_already_here <- function(bucket_name, key) {
   df_key <- list_s3_objects(bucket_name = bucket_name)
   key %in% df_key[["key"]]
 }
+
+# caution an object without tag will return an error
+# need an hnadler
+
+# vendored from https://adv-r.hadley.nz/conditions.html#failure-value
+b <- "test-coridata"
+
+fail_with <- function(expr, value = NULL) {
+  tryCatch(
+    error = function(cnd) value,
+    expr
+  )
+}
+
+get_s3_tags <- function(bucket_name) {
+  s3 <- paws::s3()
+
+  s3$get_bucket_tagging(
+    Bucket = bucket_name
+  )
+}
