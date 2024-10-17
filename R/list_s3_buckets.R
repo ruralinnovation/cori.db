@@ -8,7 +8,7 @@ list_s3_buckets <- function() {
 
   if(! has_aws_credentials()) stop("AWS credentials are missing, run set_aws_credentials()")
 
-  s3 <- paws::s3()
+  s3 <- paws.storage::s3()
   list_s3  <- s3$list_buckets()
   bucket <- list_s3[["Buckets"]]
   s3_dat <- data.frame(bucket_name = sapply(bucket,

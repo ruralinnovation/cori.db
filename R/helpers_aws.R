@@ -21,7 +21,7 @@ has_aws_credentials <- function() {
 
 get_s3_content_type <- function(bucket_name, key) {
 
-  s3 <- paws::s3()
+  s3 <- paws.storage::s3()
 
   head <- s3$head_object(
     Bucket = bucket_name,
@@ -43,7 +43,7 @@ is_key_already_here <- function(bucket_name, key) {
 }
 
 get_s3_tags <- function(bucket_name) {
-  s3 <- paws::s3()
+  s3 <- paws.storage::s3()
 
   s3$get_bucket_tagging(
     Bucket = bucket_name
