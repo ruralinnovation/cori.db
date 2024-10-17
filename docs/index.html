@@ -5,20 +5,22 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DB and SQL Helper Functions • cori.db</title>
+<title>DB, SQL and S3 Helper Functions • cori.db</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="DB and SQL Helper Functions">
-<meta property="og:description" content="Functions for connecting to and working with the CORI Postgres DB.">
+<script src="pkgdown.js"></script><meta property="og:title" content="DB, SQL and S3 Helper Functions">
+<meta property="og:description" content="Functions for connecting to and working with data storage.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cori.db</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -39,7 +41,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -49,7 +51,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ruralinnovation/cori_db">
+  <a href="https://github.com/ruralinnovation/cori_db" class="external-link">
     <span class="fab fa-github"></span>
      
   </a>
@@ -66,76 +68,142 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="database-connection-and-interaction-functions" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#database-connection-and-interaction-functions" class="anchor"></a>Database connection and interaction functions</h1></div>
-<p><img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="lifecycle"></p>
-<p>Part of the <a href="https://github.com/ruralinnovation/coriverse/wiki">coriverse</a></p>
-<p><code>cori.db</code> is an internal R package for all things database connection and SQL function related.</p>
-<p><strong>If you are connecting from a personal computer, your IP address will need to be whitelisted before you will be able to connect. Contact Matt Rogers or John Hall.</strong></p>
-<div id="setting-up-environment-variables-for-coriverse-connect_to_db-in-rstudio" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setting-up-environment-variables-for-coriverse-connect_to_db-in-rstudio" class="anchor"></a>Setting up environment variables for coriverse <code>connect_to_db()</code> in RStudio</h2>
-<ol>
-<li>Run <code><a href="reference/set_db_credentials.html">set_db_credentials('user_name_here', 'password_here')</a></code> Valid DB user and password information is available in <code>/data/Github/base/config.yml</code> on the RStudio Server</li>
+<div class="section level1">
+<div class="page-header"><h1 id="database-connection-aws-s3-and-interaction-functions">Database connection, AWS S3 and interaction functions<a class="anchor" aria-label="anchor" href="#database-connection-aws-s3-and-interaction-functions"></a>
+</h1></div>
+<div class="float">
+<img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="lifecycle"><div class="figcaption">lifecycle</div>
+</div>
+<p>Note: <em>Before installing and using the <code>cori.db</code> package, please refer to the <a href="https://github.com/ruralinnovation/wiki" class="external-link">coriverse wiki</a> for instructions on setting up your local environment to install packages from private Github repositories.</em></p>
+<p><code>cori.db</code> is an internal R package for all things database connection, SQL function related and AWS S3.</p>
+<p>It can be installed with (requires <code>GITHUB_PAT</code>):</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ruralinnovation/cori.db"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>If you are connecting from a personal computer, your IP address will need to be whitelisted before you will be able to connect. Contact Olivier Leroy or John Hall.</strong></p>
+<p>Before using <code>cori.db</code>, you must set the environment variables for our Database (Postgresql hosted in RDS from AWS) and accessing S3.</p>
+<p>For the database you need: <code>DATABASE_USER_AD</code> and <code>DATABASE_PASSWORD_AD</code> with the values of your database username and password, respectively, in either a local <code>.Renviron</code> file (or your shell’s profile i.e. <code>~/.bash_profile</code> or <code>~/.profile</code>).</p>
+<p>To use any of the S3 functions, you will need to set environment variables that represent your AWS credentials, including <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code> and <code>AWS_DEFAULT_REGION</code>. The instructions in the following section provide a convenient function to do this from within <code>R</code>.</p>
+<div class="section level2">
+<h2 id="setting-up-environment-variables-for-coriverse-in-rstudio">Setting up environment variables for coriverse in RStudio<a class="anchor" aria-label="anchor" href="#setting-up-environment-variables-for-coriverse-in-rstudio"></a>
+</h2>
+<div class="section level3">
+<h3 id="connecting-to-the-db-with-connect_to_db">Connecting to the DB with <code>connect_to_db()</code>
+<a class="anchor" aria-label="anchor" href="#connecting-to-the-db-with-connect_to_db"></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>Run <code>set_db_credentials('user_name_here', 'password_here')</code>
+</li>
 <li>Restart R</li>
-<li>Run <code><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv('DB_USER')</a></code>. If the above steps were successful, it should return the value of DB_USER you set in Step 1</li>
+<li>Run <code>Sys.getenv('DATABASE_USER_AD')</code>. If the above steps were successful, it should return the value of DB_USER you set in Step 1</li>
 </ol>
 </div>
-<div id="connecting-to-the-database-with-connect_to_db" class="section level2">
-<h2 class="hasAnchor">
-<a href="#connecting-to-the-database-with-connect_to_db" class="anchor"></a>Connecting to the database with <code>connect_to_db()</code>
+<div class="section level3">
+<h3 id="setting-aws-credentials">Setting AWS credentials<a class="anchor" aria-label="anchor" href="#setting-aws-credentials"></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>Run <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library(cori.db)</a></code>
+</li>
+<li>Run <code>set_aws_credentials(keyID = "###", accessKey = "###")</code> (the region is set by default) .</li>
+<li>Quick test <code>cori.db:::has_aws_credentials()</code> should return <code>TRUE</code>
+</li>
+<li>Restart R or run: <code>readRenviron("~/.Renviron")</code>
+</li>
+</ol>
+</div>
+</div>
+<div class="section level2">
+<h2 id="connecting-to-the-database-with-connect_to_db">Connecting to the database with <code>connect_to_db()</code>
+<a class="anchor" aria-label="anchor" href="#connecting-to-the-database-with-connect_to_db"></a>
 </h2>
-<div id="with-environment-variable-set-up" class="section level3">
-<h3 class="hasAnchor">
-<a href="#with-environment-variable-set-up" class="anchor"></a>With environment variable set up</h3>
-<pre><code># connect to schema sch_source
-con &lt;- connect_to_db("sch_source")
-
-# always end scripts by disconnecting from the database!
-DBI::dbDisconnect(con)
-</code></pre>
+<p>So, this is how the functions work…</p>
+<div class="section level3">
+<h3 id="with-environment-variable-set-up">With environment variable set up<a class="anchor" aria-label="anchor" href="#with-environment-variable-set-up"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># connect to schema metadata</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/connect_to_db.html">connect_to_db</a></span><span class="op">(</span><span class="st">"metadata"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># always end scripts by disconnecting from the database!</span></span>
+<span><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html" class="external-link">dbDisconnect</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="using-a-config-file" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-a-config-file" class="anchor"></a>Using a config file</h3>
-<pre><code># connect to schema sch_source
-con &lt;- connect_to_db("sch_source", config_name = 'db_credentials', config_file = '../base/config.yml')
-
-# always end scripts by disconnecting from the database!
-DBI::dbDisconnect(con)
-</code></pre>
 </div>
+<div class="section level2">
+<h2 id="s3-functions">S3 functions:<a class="anchor" aria-label="anchor" href="#s3-functions"></a>
+</h2>
+<p>S3 interactions is still in a prototype mode, some functions cand their arguments could change as needed.</p>
+<p>First you need to list what are our s3 buckets:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/list_s3_buckets.html">list_s3_buckets</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>You can then ask is inside an s3 buckets:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/list_s3_objects.html">list_s3_objects</a></span><span class="op">(</span>bucket_name <span class="op">=</span> <span class="st">"test-coridata"</span><span class="op">)</span> <span class="co"># argument is the bucket  name</span></span></code></pre></div>
+<p>To download a file you need to specify (1) its bucket, (2) its key and (optional) where you want to download it:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="fu"><a href="reference/get_s3_object.html">get_s3_object</a></span><span class="op">(</span><span class="st">"test-coridata"</span>, <span class="st">"blabla.txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Alternatively if the file is a csv you can read it in your R session:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dbtables</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_s3_object.html">read_s3_object</a></span><span class="op">(</span>bucket_name <span class="op">=</span> <span class="st">"test-coridata"</span>, key <span class="op">=</span> <span class="st">"data-1715776270877.csv"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Attention</strong>: it is only working with <code>.csv</code>!</p>
+<p>For now (cori.db Version: 0.3.0) sending to an S3 bucket is limited to specific buckets (To be discussed!).</p>
+<p>You can either send a file:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/put_s3_object.html">put_s3_object</a></span><span class="op">(</span><span class="st">"test-coridata"</span>, <span class="st">"my_file.qmd"</span>, key <span class="op">=</span> <span class="st">"raw_data/my_file.qmd"</span><span class="op">)</span></span></code></pre></div>
+<p>Here you can see an example of how a fake file hiearchy is implemented in S3 (just prefix with <code>some_fake_dir/</code>)</p>
+<p>If needed a <code>data.frame</code> or a tibble (but not an sf object!) can be directly send as a csv in a bucket:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/write_s3_object.html">write_s3_object</a></span><span class="op">(</span>bucket_name <span class="op">=</span> <span class="st">"test-coridata"</span>, data_frame <span class="op">=</span> <span class="va">cars</span>, key <span class="op">=</span> <span class="st">"raw_data/cars.csv"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="setup-for-development">Setup for Development<a class="anchor" aria-label="anchor" href="#setup-for-development"></a>
+</h2>
+<p>Once you have all of the dependencies installed, to build and install this package from the local project directory, run:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pkgbuild</span><span class="fu">::</span><span class="fu"><a href="https://pkgbuild.r-lib.org/reference/clean_dll.html" class="external-link">clean_dll</a></span><span class="op">(</span><span class="op">)</span>; <span class="fu">pkgbuild</span><span class="fu">::</span><span class="fu"><a href="https://pkgbuild.r-lib.org/reference/compile_dll.html" class="external-link">compile_dll</a></span><span class="op">(</span><span class="op">)</span>; <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span>; <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span>; <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span>;</span></code></pre></div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>Matt Rogers <br><small class="roles"> Maintainer, author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html#citation">Citing cori.db</a></li>
 </ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Matt Rogers <br><small class="roles"> Maintainer, author </small>  </li>
+<li>Olivier Leroy <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Matt Rogers.</p>
+  <p></p>
+<p>Developed by Matt Rogers, Olivier Leroy.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -143,6 +211,8 @@ DBI::dbDisconnect(con)
 
   
 
+
+  
 
   </body>
 </html>

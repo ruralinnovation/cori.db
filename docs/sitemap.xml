@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ruralinnovation.github.io/404.html</loc>
+  </url>
+  <url>
+    <loc>https://ruralinnovation.github.io/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://ruralinnovation.github.io/authors.html</loc>
+  </url>
+  <url>
     <loc>https://ruralinnovation.github.io/index.html</loc>
   </url>
   <url>
@@ -16,10 +25,25 @@
     <loc>https://ruralinnovation.github.io/reference/get_db_column_names.html</loc>
   </url>
   <url>
+    <loc>https://ruralinnovation.github.io/reference/get_s3_object.html</loc>
+  </url>
+  <url>
+    <loc>https://ruralinnovation.github.io/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ruralinnovation.github.io/reference/list_s3_buckets.html</loc>
+  </url>
+  <url>
+    <loc>https://ruralinnovation.github.io/reference/list_s3_objects.html</loc>
+  </url>
+  <url>
     <loc>https://ruralinnovation.github.io/reference/load_session_metadata.html</loc>
   </url>
   <url>
     <loc>https://ruralinnovation.github.io/reference/make_aliased_query.html</loc>
+  </url>
+  <url>
+    <loc>https://ruralinnovation.github.io/reference/put_s3_object.html</loc>
   </url>
   <url>
     <loc>https://ruralinnovation.github.io/reference/read_acs.html</loc>
@@ -28,10 +52,19 @@
     <loc>https://ruralinnovation.github.io/reference/read_db.html</loc>
   </url>
   <url>
+    <loc>https://ruralinnovation.github.io/reference/read_s3_object.html</loc>
+  </url>
+  <url>
     <loc>https://ruralinnovation.github.io/reference/read_sql.html</loc>
   </url>
   <url>
+    <loc>https://ruralinnovation.github.io/reference/schema_size_db.html</loc>
+  </url>
+  <url>
     <loc>https://ruralinnovation.github.io/reference/search_db_tables.html</loc>
+  </url>
+  <url>
+    <loc>https://ruralinnovation.github.io/reference/set_aws_credentials.html</loc>
   </url>
   <url>
     <loc>https://ruralinnovation.github.io/reference/set_db_credentials.html</loc>
@@ -44,5 +77,8 @@
   </url>
   <url>
     <loc>https://ruralinnovation.github.io/reference/write_db.html</loc>
+  </url>
+  <url>
+    <loc>https://ruralinnovation.github.io/reference/write_s3_object.html</loc>
   </url>
 </urlset>
