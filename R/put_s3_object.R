@@ -30,7 +30,7 @@ put_s3_object <- function(bucket_name, key, file_path, ...) {
     stop(sprintf("%s already exist in %s", key, bucket_name), call. = FALSE)
   }
 
-  s3 <- paws::s3()
+  s3 <- paws.storage::s3()
 
   response <- s3$put_object(Body = file_path,
                             Bucket = bucket_name,

@@ -25,7 +25,7 @@ Imports:
     cli,
     utils,
     dplyr,
-    paws (>= 0.4)
+    paws.storage 
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
