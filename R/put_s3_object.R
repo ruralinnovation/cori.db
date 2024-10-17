@@ -13,7 +13,6 @@
 #'
 #' \dontrun{
 #'  txt <- put_s3_object("test-coridata", "blabla.txt" ,"blabla.txt")
-#' see what it returns
 #' }
 #'
 
