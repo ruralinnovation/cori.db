@@ -41,3 +41,11 @@ is_key_already_here <- function(bucket_name, key) {
   df_key <- list_s3_objects(bucket_name = bucket_name)
   key %in% df_key[["key"]]
 }
+
+get_s3_tags <- function(bucket_name) {
+  s3 <- paws::s3()
+
+  s3$get_bucket_tagging(
+    Bucket = bucket_name
+  )
+}
