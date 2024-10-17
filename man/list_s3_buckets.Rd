@@ -7,7 +7,7 @@
 list_s3_buckets()
 }
 \value{
-a data frame with two colums bucket_name and creation_date
+a data frame with four columns: bucket_name, creation_date, group, owner (TODO: add lifecycle)
 }
 \description{
 Listing s3 bucket CORI draft

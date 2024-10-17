@@ -1,6 +1,6 @@
 #' Listing s3 bucket CORI draft
 #'
-#' @return a data frame with two colums bucket_name and creation_date 
+#' @return a data frame with four columns: bucket_name, creation_date, group, owner (TODO: add lifecycle)
 #'
 #' @export
 #'
