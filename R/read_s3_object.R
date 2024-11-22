@@ -28,7 +28,7 @@ read_s3_object <- function(bucket_name, key, ...) {
     stop("read_s3_object has only be implemented for text/csv files")
   }
 
-  s3 <- paws::s3()
+  s3 <- paws.storage::s3()
 
   body_raw <- s3$get_object(Bucket = bucket_name,
                             Key = key)$Body

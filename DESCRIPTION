@@ -1,7 +1,7 @@
 Package: cori.db
 Type: Package
 Title: DB, SQL and S3 Helper Functions
-Version: 0.3.0
+Version: 0.3.2
 Authors@R: c(person(given="Matt", family="Rogers", role=c("cre","aut"), email="matt.rogers@ruralinnovation.us"), 
     person(given="Drew", family="Rosebush", role=c("ctb"), email="drew.rosebush@ruralinnovation.us"), 
     person(given="Olivier", family="Leroy", role=c("aut"), email="olivier.leroy@ruralinnovation.us"),
@@ -25,7 +25,7 @@ Imports:
     cli,
     utils,
     dplyr,
-    paws (>= 0.4)
+    paws.storage 
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

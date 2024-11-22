@@ -4,7 +4,7 @@
 #'
 #' @return a data frame with a key and last_modified columns 
 #'
-#' @import paws
+#' @import paws.storage
 #'
 #' @export
 #'
@@ -23,9 +23,9 @@ list_s3_objects <- function(bucket_name) {
   gimme_me_key <- function(x) x[["Key"]]
   gimme_me_last_modified <- function(x) x[["LastModified"]]
 
-  s3 <- paws::s3()
+  s3 <- paws.storage::s3()
 
-  n_page <- paws::paginate(s3$list_objects_v2(Bucket = bucket_name))
+  n_page <- paws.storage::paginate(s3$list_objects_v2(Bucket = bucket_name))
 
   flatten_one_level <- unlist(n_page, recursive = FALSE)
   get_content <-  unlist(
