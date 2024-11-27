@@ -44,3 +44,39 @@ write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial 
   return(invisible(name))
 
 }
+
+
+#' Write data to the database. But ask before!
+#'
+#' Do not work with spatial data! 
+#' Use connect_to_db() default hence write to data instance
+#'
+#' @param schema a schema in DB
+#' @export
+#'
+#' @importFrom DBI dbWriteTable
+#' @importFrom DBI dbDisconnect
+#' @examples
+#'
+#' \dontrun{
+#'  # it is a function factory so first step is creating the function
+#'  write_staging <- can_i_write_table("staging")
+#'  # then using it
+#'  write_staging("mtcars", mtcars, overwrite = TRUE)
+#' }
+
+can_i_write_table <- function(schema) {
+  force(schema)
+  function(table_name, dat, ...) {
+
+    check <-readline(prompt = sprintf("Are you sure you want to overwrite %s in the database? (yes/no): ", table_name))
+
+    if (check != "yes") {
+      stop("Turkey!")
+    } else {
+      con <- cori.db::connect_to_db(schema)
+      on.exit(DBI::dbDisconnect(con), add = TRUE)
+      DBI::dbWriteTable(con, table_name, dat, ...)
+    }
+  }
+}
