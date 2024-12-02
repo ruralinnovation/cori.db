@@ -52,6 +52,8 @@ DBI::dbDisconnect(con)
 
 ## S3 functions:
 
+TODO: Improve/optimize list_s3_buckets() funciton logic.
+
 S3 interactions is still in a prototype mode, some functions cand their arguments could change as needed.
 
 First you need to list what are our s3 buckets:
