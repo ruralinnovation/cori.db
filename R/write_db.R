@@ -51,7 +51,7 @@ write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial 
 #' Do not work with spatial data! 
 #' Use connect_to_db() default hence write to data instance
 #'
-#' @param schema a schema in DB
+#' @param write_table_function a user defined function to take table name and data args which will be written to the db
 #' @export
 #'
 #' @importFrom DBI dbWriteTable
@@ -68,10 +68,10 @@ write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial 
 #'          on.exit(DBI::dbDisconnect(con), add = TRUE)
 #'          DBI::dbWriteTable(con, table_name, dat, ...)
 #'      }
-#' )
-#' # ...then use it:
+#'  )
+#'  # ...then use it:
 #'  write_staging("mtcars", mtcars, overwrite = TRUE)
-#' # ... which should prompt the user before running the callback function
+#'  # ... which should prompt the user before running the callback function
 #' }
 
 prepare_to_write_table <- function(write_table_function) {
