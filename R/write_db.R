@@ -59,24 +59,31 @@ write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial 
 #' @examples
 #'
 #' \dontrun{
-#'  # it is a function factory so first step is creating the function
-#'  write_staging <- can_i_write_table("staging")
-#'  # then using it
+#'  # This is a function factory that takes a callback function
+#'  # and returns a wrapper function, so first step is defiining the callback
+#'  # and passing it to generate the wrapper function:
+#'  write_staging <- prepare_to_write_table(
+#'      function(table_name, dat, ...) {
+#'          con <- cori.db::connect_to_db("staging") # Define the db/schema connection here
+#'          on.exit(DBI::dbDisconnect(con), add = TRUE)
+#'          DBI::dbWriteTable(con, table_name, dat, ...)
+#'      }
+#' )
+#' # ...then use it:
 #'  write_staging("mtcars", mtcars, overwrite = TRUE)
+#' # ... which should prompt the user before running the callback function
 #' }
 
-can_i_write_table <- function(schema) {
-  force(schema)
+prepare_to_write_table <- function(write_table_function) {
+  force(write_table_function)
   function(table_name, dat, ...) {
 
     check <-readline(prompt = sprintf("Are you sure you want to overwrite %s in the database? (yes/no): ", table_name))
 
     if (check != "yes") {
-      stop("Turkey!")
+      stop("Skipped writing to database!")
     } else {
-      con <- cori.db::connect_to_db(schema)
-      on.exit(DBI::dbDisconnect(con), add = TRUE)
-      DBI::dbWriteTable(con, table_name, dat, ...)
+      write_table_function(table_name, dat, ...)
     }
   }
 }
