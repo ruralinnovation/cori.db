@@ -7,7 +7,7 @@
 prepare_to_write_table(write_table_function)
 }
 \arguments{
-\item{schema}{a schema in DB}
+\item{write_table_function}{a user defined function to take table name and data args which will be written to the db}
 }
 \description{
 Do not work with spatial data! 
@@ -16,18 +16,20 @@ Use connect_to_db() default hence write to data instance
 \examples{
 
 \dontrun{
- # This is a function factory that takes a callback function
- # and returns a wrapper function, so first step is defiining the callback
- # and passing it to generate the wrapper function:
- write_staging <- prepare_to_write_table(
-     function(table_name, dat, ...) {
-         con <- cori.db::connect_to_db("staging") # Define the db/schema connection here
-         on.exit(DBI::dbDisconnect(con), add = TRUE)
-         DBI::dbWriteTable(con, table_name, dat, ...)
-     }
- )
- # ...then use it:
- write_staging("mtcars", mtcars, overwrite = TRUE)
- # ... which should prompt the user before running the callback function
+# This is a function factory that takes a callback function
+# and returns a wrapper function, so first step is defiining
+# the callback and passing it to generate the wrapper function:
+write_staging <- prepare_to_write_table(
+    function(table_name, dat, ...) {
+        con <- cori.db::connect_to_db("staging") # Define the db/schema connection here
+        on.exit(DBI::dbDisconnect(con), add = TRUE)
+        DBI::dbWriteTable(con, table_name, dat, ...)
+    }
+)
+
+# ...then use it:
+write_staging("mtcars", mtcars, overwrite = TRUE)
+
+# ... which should prompt the user before running the callback function to write data to db
 }
 }
