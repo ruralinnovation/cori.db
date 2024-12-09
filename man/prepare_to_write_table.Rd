@@ -2,30 +2,27 @@
 % Please edit documentation in R/write_db.R
 \name{prepare_to_write_table}
 \alias{prepare_to_write_table}
-\title{Write data to the database. But ask before!}
+\title{Function factory to save you an argument (schema)}
 \usage{
-prepare_to_write_table(write_table_function)
+prepare_to_write_table(schema, DB_instance = "data", ...)
 }
 \arguments{
-\item{write_table_function}{a user defined function to take table name and data args which will be written to the db}
+\item{schema}{Name of the schema}
+
+\item{DB_instance}{default `data`, passed to the connection to specify DB instance}
+
+\item{...}{other arguments for DBI::dbWriteTable()}
 }
 \description{
-Do not work with spatial data! 
-Use connect_to_db() default hence write to data instance
+Function factory to save you an argument (schema)
 }
 \examples{
 
 \dontrun{
-# This is a function factory that takes a callback function
+# This is a function factory that takes a schema
 # and returns a wrapper function, so first step is defiining
 # the callback and passing it to generate the wrapper function:
-write_staging <- prepare_to_write_table(
-    function(table_name, dat, ...) {
-        con <- cori.db::connect_to_db("staging") # Define the db/schema connection here
-        on.exit(DBI::dbDisconnect(con), add = TRUE)
-        DBI::dbWriteTable(con, table_name, dat, ...)
-    }
-)
+write_staging <- prepare_to_write_table("staging")
 
 # ...then use it:
 write_staging("mtcars", mtcars, overwrite = TRUE)

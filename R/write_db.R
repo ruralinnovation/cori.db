@@ -46,29 +46,77 @@ write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial 
 }
 
 
-#' Write data to the database. But ask before!
+#' Open a connection and write a table to specific schema
 #'
-#' Do not work with spatial data! 
-#' Use connect_to_db() default hence write to data instance
+#' A simpel wrapper function around open a connexion to the DB data, write a table and 
+#' close the connexion.
 #'
-#' @param write_table_function a user defined function to take table name and data args which will be written to the db
+#' @param schema Name of the schema to write
+#' @param name Name of the table to write
+#' @param dta A data frame that will be wrote
+#' @param overwrite `TRUE` by default, overwrite an existing table
+#' @param DB_instance default `data`, passed to the connection to specify DB instance
+#' @param ... other arguments for DBI::dbWriteTable()
 #' @export
 #'
 #' @importFrom DBI dbWriteTable
 #' @importFrom DBI dbDisconnect
-#' @examples
 #'
+
+simple_write_db <- function(schema, name, dta, overwrite = TRUE,
+                            DB_instance = "data", ...) {
+  con <- cori.db::connect_to_db(schema, dbname = DB_instance)
+  on.exit(DBI::dbDisconnect(con))
+  DBI::dbWriteTable(con, name, dta, overwrite = TRUE, ...)
+}
+
+#'  Write data to the database. But ask before!
+#'
+#' Do not work with spatial data!
+#' Use connect_to_db() default hence write to data instance
+#'
+#' @param schema Name of the schema to write
+#' @param name Name of the table to write
+#' @param dta A data frame that will be wrote
+#' @param overwrite `TRUE` by default, overwrite an existing table
+#' @param DB_instance default `data`, passed to the connection to specify DB instance
+#' @param ... other arguments for DBI::dbWriteTable()
+#' @export
+#'
+#' @importFrom DBI dbWriteTable
+#' @importFrom DBI dbDisconnect
+#'
+
+safely_write_to_db <- function(schema, name, dta, overwrite = TRUE,
+                               DB_instance = "data", ...) {
+
+  write_prompt <- paste0("Are you sure you want to overwrite",
+                         schema, ".", name, " in the database? (yes/no): ")
+  write_confirmation <- readline(prompt = write_prompt)
+
+  if (tolower(write_confirmation) == "yes") {
+    message(paste0("You chose to overwrite ", schema, ".", name, "\n"))
+    simple_write_db(schema, name, dta, overwrite = TRUE,
+                    DB_instance = DB_instance, ...)
+  } else {
+    message("You chose not to write to the database")
+  }
+}
+
+#' Function factory to save you an argument (schema)
+#'
+#' @param schema Name of the schema
+#' @param DB_instance default `data`, passed to the connection to specify DB instance
+#' @param ... other arguments for DBI::dbWriteTable()
+#' @export
+#'
+#' @examples
+#' 
 #' \dontrun{
-#' # This is a function factory that takes a callback function
+#' # This is a function factory that takes a schema
 #' # and returns a wrapper function, so first step is defiining
 #' # the callback and passing it to generate the wrapper function:
-#' write_staging <- prepare_to_write_table(
-#'     function(table_name, dat, ...) {
-#'         con <- cori.db::connect_to_db("staging") # Define the db/schema connection here
-#'         on.exit(DBI::dbDisconnect(con), add = TRUE)
-#'         DBI::dbWriteTable(con, table_name, dat, ...)
-#'     }
-#' )
+#' write_staging <- prepare_to_write_table("staging")
 #'
 #' # ...then use it:
 #' write_staging("mtcars", mtcars, overwrite = TRUE)
@@ -76,16 +124,11 @@ write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial 
 #' # ... which should prompt the user before running the callback function to write data to db
 #' }
 
-prepare_to_write_table <- function(write_table_function) {
-  force(write_table_function)
-  function(table_name, dat, ...) {
-
-    check <-readline(prompt = sprintf("Are you sure you want to overwrite %s in the database? (yes/no): ", table_name))
-
-    if (check != "yes") {
-      stop("Skipped writing to database!")
-    } else {
-      write_table_function(table_name, dat, ...)
-    }
+prepare_to_write_table <- function(schema, DB_instance = "data", ...) {
+  force(schema)
+  force(DB_instance)
+  function(name, dta) {
+    safely_write_to_db(schema, name, dta, overwrite = TRUE,
+                       DB_instance = DB_instance, ...)
   }
 }
