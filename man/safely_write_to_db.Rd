@@ -24,7 +24,7 @@ safely_write_to_db(
 
 \item{DB_instance}{default `data`, passed to the connection to specify DB instance}
 
-\item{...}{other arguments for DBI::dbWriteTable()}
+\item{...}{other arguments for cori.db::write_db()}
 }
 \description{
 Do not work with spatial data!

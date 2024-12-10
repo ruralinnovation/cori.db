@@ -12,5 +12,14 @@ test_that("Check if we can write to staging", {
   mtcars_DB <- DBI::dbGetQuery(con, "select * from mtcars")
   DBI::dbDisconnect(con)
   expect_equal(nrow(mtcars), nrow(mtcars_DB))
+})
 
+test_that("Check if we apend=false, overwrite=true error us", {
+  skip_if_no_renviron()
+  con <- connect_to_db("staging")
+  DBI::dbDisconnect(con)
+  expect_error(cori.db::write_db(con,
+                                 "mtcars",
+                                 mtcars,
+                                 overwrite = FALSE))
 })
