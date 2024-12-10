@@ -11,7 +11,7 @@ prepare_to_write_table(schema, DB_instance = "data", ...)
 
 \item{DB_instance}{default `data`, passed to the connection to specify DB instance}
 
-\item{...}{other arguments for DBI::dbWriteTable()}
+\item{...}{other arguments for cori.db::write_db}
 }
 \description{
 Function factory to save you an argument (schema)

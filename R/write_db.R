@@ -18,20 +18,20 @@
 
 write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial = FALSE, field_meta = NULL, table_meta = NULL, source_meta = NULL){
 
-  if (spatial){
+  if (spatial) {
 
-    if (!'sf' %in% class(dta)){
+    if (!'sf' %in% class(dta)) {
       stop('`spatial` is TRUE, but `dta` is not of class sf', call. = FALSE)
     }
 
     sf::st_write(dta, con, name, delete_dsn = overwrite, append = append)
   }
 
-  if (!spatial){
+  if (!spatial) {
     DBI::dbWriteTable(con, name, dta, overwrite = overwrite, append = append)
   }
 
-  if (!is.null(field_meta) | !is.null(table_meta)){
+  if (!is.null(field_meta) | !is.null(table_meta)) {
 
     # if (is.null(table_meta)){
     #   stop("Both field and table metadata are required to update metadata")
@@ -63,11 +63,11 @@ write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial 
 #' @importFrom DBI dbDisconnect
 #'
 
-simple_write_db <- function(schema, name, dta, overwrite = TRUE,
+simple_write_to_db <- function(schema, name, dta, overwrite = TRUE,
                             DB_instance = "data", ...) {
   con <- cori.db::connect_to_db(schema, dbname = DB_instance)
   on.exit(DBI::dbDisconnect(con))
-  DBI::dbWriteTable(con, name, dta, overwrite = TRUE, ...)
+  cori.db::write_db(con, name, dta, overwrite = TRUE, ...)
 }
 
 #'  Write data to the database. But ask before!
@@ -80,7 +80,7 @@ simple_write_db <- function(schema, name, dta, overwrite = TRUE,
 #' @param dta A data frame that will be wrote
 #' @param overwrite `TRUE` by default, overwrite an existing table
 #' @param DB_instance default `data`, passed to the connection to specify DB instance
-#' @param ... other arguments for DBI::dbWriteTable()
+#' @param ... other arguments for cori.db::write_db()
 #' @export
 #'
 #' @importFrom DBI dbWriteTable
@@ -96,8 +96,8 @@ safely_write_to_db <- function(schema, name, dta, overwrite = TRUE,
 
   if (tolower(write_confirmation) == "yes") {
     message(paste0("You chose to overwrite ", schema, ".", name, "\n"))
-    simple_write_db(schema, name, dta, overwrite = TRUE,
-                    DB_instance = DB_instance, ...)
+    simple_write_to_db(schema, name, dta, overwrite = TRUE,
+                       DB_instance = DB_instance, ...)
   } else {
     message("You chose not to write to the database")
   }
@@ -107,7 +107,7 @@ safely_write_to_db <- function(schema, name, dta, overwrite = TRUE,
 #'
 #' @param schema Name of the schema
 #' @param DB_instance default `data`, passed to the connection to specify DB instance
-#' @param ... other arguments for DBI::dbWriteTable()
+#' @param ... other arguments for cori.db::write_db
 #' @export
 #'
 #' @examples
