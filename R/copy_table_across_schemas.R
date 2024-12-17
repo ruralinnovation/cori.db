@@ -25,27 +25,29 @@ copy_table_across_schemas <- function (from_schema, to_schema, table_name, grant
     stop(paste0("Failed to create ", dest, "\n", e))
   })
 
-  # tryCatch({
-  #   DBI::dbExecute(con, paste0("GRANT SELECT ON TABLE ", dest, " TO read_only_access;"))
-  # }, error = function (e) {
-  #   stop(paste0("Failed to set permissions on ", dest, "\n", e))
-  # })
-
-  tryCatch({
-    message(paste0("Set access permissions on ", dest, " for..."))
-    # Grant access to read_only_access group role (for testing):
-    sapply(grant_select_roles, function (x) {
-      message(x)
-      DBI::dbExecute(con,
-                     paste0("GRANT SELECT ON TABLE ", dest, " TO ", x, ";")
-      )
-    })
-  }, error = function (e) {
-    stop(paste0("Failed to set permissions on ", dest, "\n", e))
-  })
+  result <- NULL
 
   query_to_copy_table_to_target <- paste0("INSERT into ", dest, "
                                               SELECT * FROM ", from, ";")
 
-  return(invisible(DBI::dbExecute(con,  query_to_copy_table_to_target)))
+  result <- DBI::dbExecute(con,  query_to_copy_table_to_target)
+
+  if (is.null(result) | result < 1) {
+    stop(paste0("Statement failed to execute: ", query_to_copy_table_to_target), call. = FALSE)
+  } else {
+    tryCatch({
+      message(paste0("Set access permissions on ", dest, " for..."))
+      # Grant access to read_only_access group role (for testing):
+      sapply(grant_select_roles, function (x) {
+        message(x)
+        DBI::dbExecute(con,
+                       paste0("GRANT SELECT ON TABLE ", dest, " TO ", x, ";")
+        )
+      })
+    }, error = function (e) {
+      stop(paste0("Failed to set permissions on ", dest, "\n", e))
+    })
+  }
+
+  return(invisible(result))
 }
