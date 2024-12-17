@@ -5,10 +5,11 @@
 #' @param from_schema schema name to copy the target table from
 #' @param to_schema schema name to copy the target table to
 #' @param table_name name of the table that will be copied
+#' @param grant_select_roles vector of role names that will be granted permission to select table rows (e.g. c("read_only_access","r_team"))
 #' @return the status of the copy transaction
 #' @export
 #'
-copy_table_across_schemas <- function (from_schema, to_schema, table_name) {
+copy_table_across_schemas <- function (from_schema, to_schema, table_name, grant_select_roles = c("read_only_access")) {
 
   from <- paste(from_schema, table_name, sep = ".")
   dest <- paste(to_schema, table_name, sep = ".")
@@ -24,8 +25,21 @@ copy_table_across_schemas <- function (from_schema, to_schema, table_name) {
     stop(paste0("Failed to create ", dest, "\n", e))
   })
 
+  # tryCatch({
+  #   DBI::dbExecute(con, paste0("GRANT SELECT ON TABLE ", dest, " TO read_only_access;"))
+  # }, error = function (e) {
+  #   stop(paste0("Failed to set permissions on ", dest, "\n", e))
+  # })
+
   tryCatch({
-    DBI::dbExecute(con, paste0("GRANT SELECT ON TABLE ", dest, " TO read_only_access;"))
+    message(paste0("Set access permissions on ", dest, " for..."))
+    # Grant access to read_only_access group role (for testing):
+    sapply(grant_select_roles, function (x) {
+      message(x)
+      DBI::dbExecute(con,
+                     paste0("GRANT SELECT ON TABLE ", dest, " TO ", x, ";")
+      )
+    })
   }, error = function (e) {
     stop(paste0("Failed to set permissions on ", dest, "\n", e))
   })

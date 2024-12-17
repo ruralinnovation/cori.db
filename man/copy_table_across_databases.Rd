@@ -21,10 +21,7 @@ copy_table_across_databases(
 
 \item{to_db}{database name to copy the target table to}
 
-\item{grant_select_roles}{vector of role names that will be granted permission to select table rows (e.g. c(
-  "read_only_access",
-  "r_team"
-))}
+\item{grant_select_roles}{vector of role names that will be granted permission to select table rows (e.g. c("read_only_access","r_team"))}
 }
 \value{
 a data.frame of the copied table

@@ -6,7 +6,12 @@
 ... will fail if table already exists in to_schema:
 ERROR:  relation "..." already exists}
 \usage{
-copy_table_across_schemas(from_schema, to_schema, table_name)
+copy_table_across_schemas(
+  from_schema,
+  to_schema,
+  table_name,
+  grant_select_roles = c("read_only_access")
+)
 }
 \arguments{
 \item{from_schema}{schema name to copy the target table from}
@@ -14,6 +19,8 @@ copy_table_across_schemas(from_schema, to_schema, table_name)
 \item{to_schema}{schema name to copy the target table to}
 
 \item{table_name}{name of the table that will be copied}
+
+\item{grant_select_roles}{vector of role names that will be granted permission to select table rows (e.g. c("read_only_access","r_team"))}
 }
 \value{
 the status of the copy transaction
