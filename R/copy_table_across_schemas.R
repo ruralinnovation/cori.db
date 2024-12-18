@@ -9,7 +9,7 @@
 #' @return the status of the copy transaction
 #' @export
 #'
-copy_table_across_schemas <- function (from_schema, to_schema, table_name, grant_select_roles = c("read_only_access")) {
+copy_table_across_schemas <- function (from_schema, to_schema, table_name, grant_select_roles = c("read_only_access"), overwrite = FALSE) {
 
   from <- paste(from_schema, table_name, sep = ".")
   dest <- paste(to_schema, table_name, sep = ".")
@@ -17,23 +17,35 @@ copy_table_across_schemas <- function (from_schema, to_schema, table_name, grant
   con <- cori.db::connect_to_db(c(from_schema, to_schema))
   on.exit(DBI::dbDisconnect(con), add = TRUE)
 
-  query_to_create_target <- paste0("CREATE table ", dest, " (like ", from , " including all);")
+  if (overwrite) {
+    # DROP existing table
+
+    query_to_drop_dest <- paste0("DROP TABLE IF EXISTS ", dest, ";")
+
+    tryCatch({
+      DBI::dbExecute(con, query_to_drop_dest)
+    }, error = function (e) {
+      stop(paste0("Failed to create ", dest, "\n", e))
+    })
+  }
+
+  query_to_create_dest <- paste0("CREATE table ", dest, " (like ", from , " including all);")
 
   tryCatch({
-    DBI::dbExecute(con, query_to_create_target)
+    DBI::dbExecute(con, query_to_create_dest)
   }, error = function (e) {
     stop(paste0("Failed to create ", dest, "\n", e))
   })
 
   result <- NULL
 
-  query_to_copy_table_to_target <- paste0("INSERT into ", dest, "
+  query_to_copy_table_to_dest <- paste0("INSERT into ", dest, "
                                               SELECT * FROM ", from, ";")
 
-  result <- DBI::dbExecute(con,  query_to_copy_table_to_target)
+  result <- DBI::dbExecute(con,  query_to_copy_table_to_dest)
 
   if (is.null(result) | result < 1) {
-    stop(paste0("Statement failed to execute: ", query_to_copy_table_to_target), call. = FALSE)
+    stop(paste0("Statement failed to execute: ", query_to_copy_table_to_dest), call. = FALSE)
   } else {
     tryCatch({
       message(paste0("Set access permissions on ", dest, " for..."))

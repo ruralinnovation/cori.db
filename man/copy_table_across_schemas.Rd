@@ -10,7 +10,8 @@ copy_table_across_schemas(
   from_schema,
   to_schema,
   table_name,
-  grant_select_roles = c("read_only_access")
+  grant_select_roles = c("read_only_access"),
+  overwrite = FALSE
 )
 }
 \arguments{
