@@ -22,6 +22,8 @@ copy_table_across_schemas(
 \item{table_name}{name of the table that will be copied}
 
 \item{grant_select_roles}{vector of role names that will be granted permission to select table rows (e.g. c("read_only_access","r_team"))}
+
+\item{overwrite}{if TRUE and table exists in to_schema, it will be dropped and recreated (default = FALSE)}
 }
 \value{
 the status of the copy transaction
