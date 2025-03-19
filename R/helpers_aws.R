@@ -2,17 +2,25 @@
 
 has_aws_credentials <- function() {
 
-  home <- Sys.getenv("HOME")
-  renviron <- file.path(home, ".Renviron")
+  # home <- Sys.getenv("HOME")
 
-  if (!file.exists(renviron)) {
+  #### TODO: This is wrong... if we are going to automate transactions with AWS services, we should store credentials
+  #### in the way that AWS recomends: https://docs.aws.amazon.com/cli/latest/userguide/cli-authentication-user.html
+  #### ... minus the bit about the uber-complex configuration of SSO in AWS IAM Identity Center (later)
+  # renviron <- file.path(home, ".Renviron")
+
+  #### ... instead check for the standard aws "credentials" file
+  credentials <- file.path(paste0(home, "/.aws"), "credentials")
+
+  # if (!file.exists(renviron)) {
+  if (!file.exists(credentials)) {
     return(FALSE)
-    } else {
-
-      if (nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0) return(FALSE)
-      if (nchar(Sys.getenv("AWS_SECRET_ACCESS_KEY")) == 0) return(FALSE)
-      if (nchar(Sys.getenv("AWS_DEFAULT_REGION")) == 0) return(FALSE)
+  # } else {
+  #   if (nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0) return(FALSE)
+  #   if (nchar(Sys.getenv("AWS_SECRET_ACCESS_KEY")) == 0) return(FALSE)
+  #   if (nchar(Sys.getenv("AWS_DEFAULT_REGION")) == 0) return(FALSE)
   }
+
   return(TRUE)
 }
 

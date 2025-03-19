@@ -30,6 +30,7 @@
 #' }
 #'
 
+#### TODO: This conflicts with the way duckdb (and all other AWS SDKs/utils) use credentials... will update
 set_aws_credentials <- function(keyID, accessKey,
                                 region = "us-east-1",
                                 install = TRUE) {
@@ -45,8 +46,6 @@ set_aws_credentials <- function(keyID, accessKey,
       file.create(renviron)
 
     } else {
-      # Backup original .Renviron before doing anything else here.
-      file.copy(renviron, file.path(home, ".Renviron_backup"))
 
       tv <- readLines(renviron)
 
@@ -54,11 +53,13 @@ set_aws_credentials <- function(keyID, accessKey,
 
         ans <- utils::menu(c(paste(crayon::green(cli::symbol$tick), "Yes"),
                              paste(crayon::red(cli::symbol$cross), "No")),
-                           title = paste("A AWS_ACCESS_KEY_ID",
+                           title = paste("An AWS_ACCESS_KEY_ID",
                                          "already exists.",
                                          "Do you want to overwrite it?"))
 
         if (ans == 1) {
+          # Backup original .Renviron before doing anything else here.
+          file.copy(renviron, file.path(home, ".Renviron_backup"))
 
           cat("Your original .Renviron will be backed up and stored in your R HOME directory if needed.")
 
