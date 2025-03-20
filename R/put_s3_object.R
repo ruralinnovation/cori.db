@@ -1,7 +1,7 @@
-#' put an a local file into an s3 bucket
+#' put a local file into an s3 bucket
 #'
 #' @param bucket_name string, a bucket name
-#' @param key string, how will be named the key in s3 bucket
+#' @param key string name of the key in s3 bucket
 #' @param file_path string, file (path) that you want to upload
 #' @param ... other arguments from paws's put_object()
 #'

@@ -48,6 +48,14 @@ can_i_write_in_that_bucket <- function(bucket_name) {
   return(TRUE)
 }
 
+get_s3_tags <- function(bucket_name) {
+  s3 <- paws.storage::s3()
+
+  s3$get_bucket_tagging(
+    Bucket = bucket_name
+  )
+}
+
 is_key_already_here <- function(bucket_name, key) {
   df_key <- list_s3_objects(bucket_name = bucket_name)
   key_is_present <- key %in% df_key[["key"]]
@@ -60,10 +68,17 @@ is_key_already_here <- function(bucket_name, key) {
   }
 }
 
-get_s3_tags <- function(bucket_name) {
-  s3 <- paws.storage::s3()
+is_prefix_already_present <- function(bucket_name, prefix) {
+  df_key <- list_s3_objects(bucket_name = bucket_name)
 
-  s3$get_bucket_tagging(
-    Bucket = bucket_name
-  )
+  key_is_present <- any(unlist(lapply(df_key[["key"]], function (x) {
+    grepl(prefix, x)
+  })))
+
+  if (key_is_present) {
+    message(paste0("Warning: ", bucket_name, " already contains files under the prefix '", prefix, "'"))
+    return(key_is_present)
+  } else {
+    return (FALSE)
+  }
 }
