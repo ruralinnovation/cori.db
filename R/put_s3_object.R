@@ -26,16 +26,25 @@ put_s3_object <- function(bucket_name, key, file_path, ...) {
     stop(sprintf("%s is not on the list of curated bucket", bucket_name))
   }
 
-  if (is_key_already_here(bucket_name, key)) {
+  key_is_present <- is_key_already_here(bucket_name, key)
+
+  if ((!key_is_present)
+    # If the key/prefix includes "dev/" or "test/" skip overwrite check
+    || grepl("development/", key ) || grepl("dev/", key ) || grepl("test/", key)
+  ) {
+
+    s3 <- paws.storage::s3()
+
+    response <- s3$put_object(Body = file_path,
+                              Bucket = bucket_name,
+                              Key = key,
+                              ...)
+
+    return(invisible(response))
+
+  } else if (key_is_present) {
     stop(sprintf("%s already exist in %s", key, bucket_name), call. = FALSE)
   }
 
-  s3 <- paws.storage::s3()
-
-  response <- s3$put_object(Body = file_path,
-                            Bucket = bucket_name,
-                            Key = key,
-                            ...)
-
-  return(invisible(response))
+  return(NULL)
 }

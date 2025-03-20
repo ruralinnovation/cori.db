@@ -17,7 +17,7 @@ copy_table_across_databases(
 
 \item{table_name}{name of the table that will be copied}
 
-\item{from_db}{database name to copy the target table to}
+\item{from_db}{database name to copy the target table from}
 
 \item{to_db}{database name to copy the target table to}
 

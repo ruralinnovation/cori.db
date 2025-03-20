@@ -1,9 +1,9 @@
 #' Copy a table between two CORI/RISI Postgres DB instances
 #'
 #' @param schema_name schema name in from_db with target table that will be copied to same schema name in to_db
-#' @param from_db database name to copy the target table to
-#' @param to_db database name to copy the target table to
 #' @param table_name name of the table that will be copied
+#' @param from_db database name to copy the target table from
+#' @param to_db database name to copy the target table to
 #' @param grant_select_roles vector of role names that will be granted permission to select table rows (e.g. c("read_only_access","r_team"))
 #' @return a data.frame of the copied table
 #' @export
