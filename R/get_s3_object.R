@@ -26,6 +26,10 @@ get_s3_object <- function(bucket_name, key, file_path, ...) {
   if (missing(file_path)) {
     where_to_write <- paste0(getwd(), "/", key)
   } else {
+    dir_path <- dirname(file_path)
+    if (!dir.exists(dir_path)) {
+      dir.create(dir_path)
+    }
     where_to_write <-  paste0(file_path)
   }
 
@@ -33,7 +37,11 @@ get_s3_object <- function(bucket_name, key, file_path, ...) {
 
   s3$download_file(
     Bucket = bucket_name,
-    Key = key,
+    Key = if (grepl("^/", test_key)) {
+      key
+    } else {
+      paste0("/", key)
+    },
     Filename = where_to_write,
     ...
   )
