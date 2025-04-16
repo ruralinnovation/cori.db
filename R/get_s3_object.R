@@ -37,7 +37,7 @@ get_s3_object <- function(bucket_name, key, file_path, ...) {
 
   s3$download_file(
     Bucket = bucket_name,
-    Key = if (grepl("^/", test_key)) {
+    Key = if (grepl("^/", key)) {
       key
     } else {
       paste0("/", key)
