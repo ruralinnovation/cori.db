@@ -26,7 +26,7 @@ get_s3_object <- function(bucket_name, key, file_path, ...) {
   if (missing(file_path)) {
     where_to_write <- paste0(getwd(), "/", key)
   } else {
-    where_to_write <-  paste0(file_path, key)
+    where_to_write <-  paste0(file_path)
   }
 
   s3 <- paws.storage::s3()
