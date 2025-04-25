@@ -41,8 +41,6 @@ read_db <- function(con, table = NULL, query = NULL, spatial = FALSE){
 
   }
 
-  pull_metadata(con, table)
-
   return(out)
 
 }

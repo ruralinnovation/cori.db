@@ -26,14 +26,22 @@ get_s3_object <- function(bucket_name, key, file_path, ...) {
   if (missing(file_path)) {
     where_to_write <- paste0(getwd(), "/", key)
   } else {
-    where_to_write <-  paste0(file_path, key)
+    dir_path <- dirname(file_path)
+    if (!dir.exists(dir_path)) {
+      dir.create(dir_path)
+    }
+    where_to_write <-  paste0(file_path)
   }
 
   s3 <- paws.storage::s3()
 
   s3$download_file(
     Bucket = bucket_name,
-    Key = key,
+    Key = if (grepl("^/", key)) {
+      key
+    } else {
+      paste0("/", key)
+    },
     Filename = where_to_write,
     ...
   )

@@ -1,9 +1,9 @@
-#' put an a local file into an s3 bucket
+#' put a local file into an S3 bucket
 #'
-#' @param bucket_name string, a bucket name
-#' @param key string, how will be named the key in s3 bucket
-#' @param file_path string, file (path) that you want to upload
-#' @param ... other arguments from paws's put_object()
+#' @param bucket_name string, S3 bucket name
+#' @param s3_key_path string, intended path + name of the file within S3 bucket
+#' @param file_path string, local path + name of the file that you want to upload
+#' @param ... other arguments to paws's put_object()
 #'
 #' @return return invisibly the response from AWS
 #'
@@ -16,7 +16,7 @@
 #' }
 #'
 
-put_s3_object <- function(bucket_name, key, file_path, ...) {
+put_s3_object <- function(bucket_name, s3_key_path, file_path, ...) {
 
   if (! has_aws_credentials()) {
     stop("AWS credentials are missing, run set_aws_credentials()")
@@ -26,16 +26,25 @@ put_s3_object <- function(bucket_name, key, file_path, ...) {
     stop(sprintf("%s is not on the list of curated bucket", bucket_name))
   }
 
-  if (is_key_already_here(bucket_name, key)) {
-    stop(sprintf("%s already exist in %s", key, bucket_name), call. = FALSE)
+  key_is_present <- is_key_already_here(bucket_name, s3_key_path)
+
+  if ((!key_is_present)
+    # If the key/prefix includes "dev/" or "test/" skip overwrite check
+    || grepl("^dev", s3_key_path) || grepl("^test", s3_key_path)
+  ) {
+
+    s3 <- paws.storage::s3()
+
+    response <- s3$put_object(Body = file_path,
+                              Bucket = bucket_name,
+                              Key = s3_key_path,
+                              ...)
+
+    return(invisible(response))
+
+  } else if (key_is_present) {
+    stop(sprintf("%s already exist in %s", s3_key_path, bucket_name), call. = FALSE)
   }
 
-  s3 <- paws.storage::s3()
-
-  response <- s3$put_object(Body = file_path,
-                            Bucket = bucket_name,
-                            Key = key,
-                            ...)
-
-  return(invisible(response))
+  return(NULL)
 }

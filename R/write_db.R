@@ -18,20 +18,20 @@
 
 write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial = FALSE, field_meta = NULL, table_meta = NULL, source_meta = NULL){
 
-  if (spatial){
+  if (spatial) {
 
-    if (!'sf' %in% class(dta)){
+    if (!'sf' %in% class(dta)) {
       stop('`spatial` is TRUE, but `dta` is not of class sf', call. = FALSE)
     }
 
     sf::st_write(dta, con, name, delete_dsn = overwrite, append = append)
   }
 
-  if (!spatial){
+  if (!spatial) {
     DBI::dbWriteTable(con, name, dta, overwrite = overwrite, append = append)
   }
 
-  if (!is.null(field_meta) | !is.null(table_meta)){
+  if (!is.null(field_meta) | !is.null(table_meta)) {
 
     # if (is.null(table_meta)){
     #   stop("Both field and table metadata are required to update metadata")
@@ -43,4 +43,92 @@ write_db <- function(con, name, dta, overwrite = FALSE, append = FALSE, spatial 
 
   return(invisible(name))
 
+}
+
+
+#' Open a connection and write a table to specific schema
+#'
+#' A simpel wrapper function around open a connexion to the DB data, write a table and 
+#' close the connexion.
+#'
+#' @param schema Name of the schema to write
+#' @param name Name of the table to write
+#' @param dta A data frame that will be wrote
+#' @param overwrite `TRUE` by default, overwrite an existing table
+#' @param DB_instance default `data`, passed to the connection to specify DB instance
+#' @param ... other arguments for DBI::dbWriteTable()
+#' @export
+#'
+#' @importFrom DBI dbWriteTable
+#' @importFrom DBI dbDisconnect
+#'
+
+simple_write_to_db <- function(schema, name, dta, overwrite = TRUE,
+                            DB_instance = "data", ...) {
+  con <- cori.db::connect_to_db(schema, dbname = DB_instance)
+  on.exit(DBI::dbDisconnect(con))
+  cori.db::write_db(con, name, dta, overwrite = TRUE, ...)
+}
+
+#'  Write data to the database. But ask before!
+#'
+#' Do not work with spatial data!
+#' Use connect_to_db() default hence write to data instance
+#'
+#' @param schema Name of the schema to write
+#' @param name Name of the table to write
+#' @param dta A data frame that will be wrote
+#' @param overwrite `TRUE` by default, overwrite an existing table
+#' @param DB_instance default `data`, passed to the connection to specify DB instance
+#' @param ... other arguments for cori.db::write_db()
+#' @export
+#'
+#' @importFrom DBI dbWriteTable
+#' @importFrom DBI dbDisconnect
+#'
+
+safely_write_to_db <- function(schema, name, dta, overwrite = TRUE,
+                               DB_instance = "data", ...) {
+
+  write_prompt <- paste0("Are you sure you want to overwrite",
+                         schema, ".", name, " in the database? (yes/no): ")
+  write_confirmation <- readline(prompt = write_prompt)
+
+  if (tolower(write_confirmation) == "yes") {
+    message(paste0("You chose to overwrite ", schema, ".", name, "\n"))
+    simple_write_to_db(schema, name, dta, overwrite = TRUE,
+                       DB_instance = DB_instance, ...)
+  } else {
+    message("You chose not to write to the database")
+  }
+}
+
+#' Function factory to save you an argument (schema)
+#'
+#' @param schema Name of the schema
+#' @param DB_instance default `data`, passed to the connection to specify DB instance
+#' @param ... other arguments for cori.db::write_db
+#' @export
+#'
+#' @examples
+#' 
+#' \dontrun{
+#' # This is a function factory that takes a schema
+#' # and returns a wrapper function, so first step is defiining
+#' # the callback and passing it to generate the wrapper function:
+#' write_staging <- prepare_to_write_table("staging")
+#'
+#' # ...then use it:
+#' write_staging("mtcars", mtcars, overwrite = TRUE)
+#'
+#' # ... which should prompt the user before running the callback function to write data to db
+#' }
+
+prepare_to_write_table <- function(schema, DB_instance = "data", ...) {
+  force(schema)
+  force(DB_instance)
+  function(name, dta) {
+    safely_write_to_db(schema, name, dta, overwrite = TRUE,
+                       DB_instance = DB_instance, ...)
+  }
 }

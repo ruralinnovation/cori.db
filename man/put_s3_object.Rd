@@ -2,24 +2,24 @@
 % Please edit documentation in R/put_s3_object.R
 \name{put_s3_object}
 \alias{put_s3_object}
-\title{put an a local file into an s3 bucket}
+\title{put a local file into an S3 bucket}
 \usage{
-put_s3_object(bucket_name, key, file_path, ...)
+put_s3_object(bucket_name, s3_key_path, file_path, ...)
 }
 \arguments{
-\item{bucket_name}{string, a bucket name}
+\item{bucket_name}{string, S3 bucket name}
 
-\item{key}{string, how will be named the key in s3 bucket}
+\item{s3_key_path}{string, intended path + name of the file within S3 bucket}
 
-\item{file_path}{string, file (path) that you want to upload}
+\item{file_path}{string, local path + name of the file that you want to upload}
 
-\item{...}{other arguments from paws's put_object()}
+\item{...}{other arguments to paws's put_object()}
 }
 \value{
 return invisibly the response from AWS
 }
 \description{
-put an a local file into an s3 bucket
+put a local file into an S3 bucket
 }
 \examples{
 

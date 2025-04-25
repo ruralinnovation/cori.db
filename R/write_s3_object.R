@@ -3,8 +3,8 @@
 #'@details it is using tempfile() shenanigans
 #'
 #' @param bucket_name string, a bucket name
+#' @param s3_key_path string, intended path + name of the file within S3 bucket
 #' @param data_frame an R object of class "data.frame", sf object are excluded
-#' @param key string, object/file that you want to download
 #' @param ... extra argument to pass on write.csv()
 #'
 #' @return return invisibly the response from AWS
@@ -15,11 +15,11 @@
 #' @examples
 #'
 #' \dontrun{
-#'  write_s3_object("test-coridata", cars, "messy-data/cars.csv")
+#'  write_s3_object("test-coridata", "test-messy-data/cars.csv", cars)
 #' }
 #'
 
-write_s3_object <- function(bucket_name, data_frame, key, ...) {
+write_s3_object <- function(bucket_name, s3_key_path, data_frame, ...) {
 
   if (!is.data.frame(data_frame)) {
     stop(sprintf("%s need to be a data.frame",
@@ -36,7 +36,6 @@ write_s3_object <- function(bucket_name, data_frame, key, ...) {
 
   write.csv(data_frame, temp_file,  row.names = FALSE, ...)
 
-  put_s3_object(file_path = temp_file,
-                bucket_name = bucket_name, key = key)
+  put_s3_object(bucket_name, s3_key_path, file_path = temp_file)
 
 }
