@@ -52,13 +52,17 @@ DBI::dbDisconnect(con)
 
 ## S3 functions:
 
-S3 interactions is still in a prototype mode, some functions cand their arguments could change as needed.
+TODO: Improve/optimize list_s3_buckets() funciton logic.
+
+S3 interactions is still in a prototype mode, some functions and their arguments could change as needed.
 
 First you need to list what are our s3 buckets:
 
 ```r
 list_s3_buckets()
 ```
+
+### Read
 
 You can then ask is inside an s3 buckets:
 
@@ -81,21 +85,34 @@ dbtables <- read_s3_object(bucket_name = "test-coridata", key = "data-1715776270
 **Attention**: it is only working with `.csv`! 
 
 
-For now (cori.db Version: 0.3.0) sending to an S3 bucket is limited to specific buckets (To be discussed!).
+### Write
+
+
+A `data.frame` or a tibble (but not an sf object!) can be directly send as a csv in a bucket:
+
+```r
+# Write the data.frame to a CSV file
+write_s3_object(bucket_name = "test-coridata", s3_key_path = "tests/data/cars.csv", data_frame = cars)
+```
 
 You can either send a file:
 
 ```r
-put_s3_object("test-coridata", "my_file.qmd", key = "raw_data/my_file.qmd")
+write.csv(cars, file = "tests/data/cars.csv", row.names = FALSE)
+put_s3_object("test-coridata", s3_key_path = "tests/data/cars.csv", file_path = "tests/data/cars.csv")
 ```
 
-Here you can see an example of how a fake file hiearchy is implemented in S3 (just prefix with `some_fake_dir/`)
-
-If needed a `data.frame` or a tibble (but not an sf object!) can be directly send as a csv in a bucket:
+... or you can send a directory of files:
 
 ```r
-write_s3_object(bucket_name = "test-coridata", data_frame = cars, key = "raw_data/cars.csv")
+put_s3_objects_recursive("test-coridata", s3_key_prefix = "tests/data", dir_path ="tests/data")
 ```
+
+
+Here you can see an example of how a fake file hiearchy is implemented in S3 (just prefix with `some_fake_dir/`). It's fake because the `s3_key_path` is actually represented in S3 as a string that is prefixed to the file name, but for all intents and purposes we can think of it as a diretory structure.
+
+For now (cori.db Version: 0.3.0) sending to an S3 bucket is limited to specific buckets (To be discussed!).
+
 
 ## Setup for Development
 

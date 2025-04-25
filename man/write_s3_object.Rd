@@ -4,14 +4,14 @@
 \alias{write_s3_object}
 \title{write a data.frame into a csv in a s3 bucket}
 \usage{
-write_s3_object(bucket_name, data_frame, key, ...)
+write_s3_object(bucket_name, s3_key_path, data_frame, ...)
 }
 \arguments{
 \item{bucket_name}{string, a bucket name}
 
-\item{data_frame}{an R object of class "data.frame", sf object are excluded}
+\item{s3_key_path}{string, intended path + name of the file within S3 bucket}
 
-\item{key}{string, object/file that you want to download}
+\item{data_frame}{an R object of class "data.frame", sf object are excluded}
 
 \item{...}{extra argument to pass on write.csv()}
 }
@@ -27,7 +27,7 @@ it is using tempfile() shenanigans
 \examples{
 
 \dontrun{
- write_s3_object("test-coridata", cars, "messy-data/cars.csv")
+ write_s3_object("test-coridata", "test-messy-data/cars.csv", cars)
 }
 
 }
