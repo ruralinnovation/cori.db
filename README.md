@@ -32,9 +32,10 @@ To use any of the S3 functions, you will need to set environment variables that 
 ### Setting AWS credentials
 
 1. Run `library(cori.db)` 
-2. Run  `set_aws_credentials(keyID = "###", accessKey = "###")` (the region is  set by default) . 
+~~2. Run  `set_aws_credentials(keyID = "###", accessKey = "###")` (the region is  set by default) . ~~
+2. Use the `aws` CLI to configure standard AWS credentials (see [Configure the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-authentication-user.html#cli-authentication-user-configure.title))
 3. Quick test `cori.db:::has_aws_credentials()` should return `TRUE`
-4. Restart R or run: `readRenviron("~/.Renviron")`
+4. Restart R
 
 ## Connecting to the database with `connect_to_db()`
 
