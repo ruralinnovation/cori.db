@@ -1,9 +1,9 @@
-#' put files from a local directory into an s3 bucket
+#' put files from a local directory into an S3 bucket
 #'
 #' @param bucket_name string, a bucket name
-#' @param s3_prefix string name of the prefix (directory path) used on the S3 bucket
-#' @param  dir_path string directory (path) containing the files that you want to upload
-#' @param ... other arguments from paws's put_object()
+#' @param s3_key_prefix string, name of the prefix (directory path) used within the S3 bucket
+#' @param  dir_path string, local directory path containing the files that you want to upload
+#' @param ... other arguments to paws's put_object()
 #'
 #' @return return invisibly the response from AWS
 #'
@@ -12,11 +12,11 @@
 #' @examples
 #'
 #' \dontrun{
-#'  txt <- put_s3_objects_recursive("test-coridata", "blabla.txt" ,"blabla.txt")
+#'  txt <- put_s3_objects_recursive("test-coridata", "test/blabla.txt" ,"test")
 #' }
 #'
 
-put_s3_objects_recursive <- function(bucket_name, s3_prefix, dir_path, ...) {
+put_s3_objects_recursive <- function(bucket_name, s3_key_prefix, dir_path, ...) {
 
   if (! has_aws_credentials()) {
     stop("AWS credentials are missing, run set_aws_credentials()")
@@ -26,19 +26,19 @@ put_s3_objects_recursive <- function(bucket_name, s3_prefix, dir_path, ...) {
     stop(sprintf("%s is not on the list of curated bucket", bucket_name))
   }
 
-  prefix_is_present <- is_prefix_already_present(bucket_name, s3_prefix)
+  prefix_is_present <- is_prefix_already_present(bucket_name, s3_key_prefix)
 
   if ((!prefix_is_present)
     # If the key/prefix includes "dev/" or "test/" skip overwrite check
-    || grepl("development/", s3_prefix ) || grepl("dev/", s3_prefix ) || grepl("test/", s3_prefix)
+    || grepl("^dev", s3_key_prefix) || grepl("^test", s3_key_prefix)
   ) {
 
-    message(paste0("aws s3 cp --recursive ", dir_path, " s3://", bucket_name, "/", s3_prefix))
+    message(paste0("aws s3 cp --recursive ", dir_path, " s3://", bucket_name, "/", s3_key_prefix))
 
-    base::system2("aws", args = c("s3", "cp", "--recursive", dir_path, paste0("s3://", bucket_name, "/", s3_prefix)))
+    base::system2("aws", args = c("s3", "cp", "--recursive", dir_path, paste0("s3://", bucket_name, "/", s3_key_prefix)))
 
   } else if (prefix_is_present) {
-    stop(sprintf("%s already exist in %s", s3_prefix, bucket_name), call. = FALSE)
+    stop(sprintf("%s already exist in %s", s3_key_prefix, bucket_name), call. = FALSE)
   }
 
   return(NULL)

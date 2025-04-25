@@ -2,29 +2,29 @@
 % Please edit documentation in R/put_s3_objects_recursive.R
 \name{put_s3_objects_recursive}
 \alias{put_s3_objects_recursive}
-\title{put files from a local directory into an s3 bucket}
+\title{put files from a local directory into an S3 bucket}
 \usage{
-put_s3_objects_recursive(bucket_name, s3_prefix, dir_path, ...)
+put_s3_objects_recursive(bucket_name, s3_key_prefix, dir_path, ...)
 }
 \arguments{
 \item{bucket_name}{string, a bucket name}
 
-\item{s3_prefix}{string name of the prefix (directory path) used on the S3 bucket}
+\item{s3_key_prefix}{string, name of the prefix (directory path) used within the S3 bucket}
 
-\item{dir_path}{string directory (path) containing the files that you want to upload}
+\item{dir_path}{string, local directory path containing the files that you want to upload}
 
-\item{...}{other arguments from paws's put_object()}
+\item{...}{other arguments to paws's put_object()}
 }
 \value{
 return invisibly the response from AWS
 }
 \description{
-put files from a local directory into an s3 bucket
+put files from a local directory into an S3 bucket
 }
 \examples{
 
 \dontrun{
- txt <- put_s3_objects_recursive("test-coridata", "blabla.txt" ,"blabla.txt")
+ txt <- put_s3_objects_recursive("test-coridata", "test/blabla.txt" ,"test")
 }
 
 }
