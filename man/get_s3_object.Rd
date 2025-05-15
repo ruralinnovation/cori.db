@@ -2,16 +2,18 @@
 % Please edit documentation in R/get_s3_object.R
 \name{get_s3_object}
 \alias{get_s3_object}
-\title{get object hosted in s3 downloaded}
+\title{Download an object that is hosted on S3}
 \usage{
-get_s3_object(bucket_name, key, file_path, ...)
+get_s3_object(bucket_name, key, file_path, key_path = "", ...)
 }
 \arguments{
 \item{bucket_name}{string, a bucket name}
 
-\item{key}{string, object/file that you want to download}
+\item{key}{string, object/file that you want to download (e.g, county_data.csv)}
 
-\item{file_path}{string, a path where you want the file to be downloaded ("~/Documents/my_proj/"")}
+\item{file_path}{string, a path where you want the file to be downloaded ("~/Documents/my_proj/")}
+
+\item{key_path}{string, path to your key in the s3 bucket (e.g., "raw/" if you want raw/county_data.csv)}
 
 \item{...}{other arguments from paws's downloadfile}
 }
@@ -19,15 +21,15 @@ get_s3_object(bucket_name, key, file_path, ...)
 return invisibly the path where the file has been downloaded
 }
 \description{
-get object hosted in s3 downloaded
+Download an object that is hosted on S3
 }
 \details{
-If file_path is not provided it will the object in the curent directory
+If file_path is not provided, the object will be saved in the current directory
 }
 \examples{
 
 \dontrun{
- txt <- get_s3_object("test-coridata", "blabla.txt")
+ txt <- get_s3_object("test-coridata", "county_data.csv", "proj_data/", key_path = "raw/")
  txt
 }
 
