@@ -43,7 +43,7 @@ put_s3_object <- function(bucket_name, s3_key_path, file_path, ...) {
     return(invisible(response))
 
   } else if (key_is_present) {
-    stop(sprintf("%s already exist in %s", s3_key_path, bucket_name), call. = FALSE)
+    stop(sprintf("%s already exists in %s", s3_key_path, bucket_name), call. = FALSE)
   }
 
   return(NULL)

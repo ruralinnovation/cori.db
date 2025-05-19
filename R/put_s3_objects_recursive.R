@@ -38,7 +38,7 @@ put_s3_objects_recursive <- function(bucket_name, s3_key_prefix, dir_path, ...) 
     base::system2("aws", args = c("s3", "cp", "--recursive", dir_path, paste0("s3://", bucket_name, "/", s3_key_prefix)))
 
   } else if (prefix_is_present) {
-    stop(sprintf("%s already exist in %s", s3_key_prefix, bucket_name), call. = FALSE)
+    stop(sprintf("%s already exists in %s", s3_key_prefix, bucket_name), call. = FALSE)
   }
 
   return(NULL)
