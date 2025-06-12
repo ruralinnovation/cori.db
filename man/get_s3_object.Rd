@@ -4,16 +4,25 @@
 \alias{get_s3_object}
 \title{Download an object that is hosted on S3}
 \usage{
-get_s3_object(bucket_name, key, file_path, key_path = "", ...)
+get_s3_object(
+  bucket_name,
+  key,
+  dir_path,
+  key_path = "",
+  create_local_directory = FALSE,
+  ...
+)
 }
 \arguments{
 \item{bucket_name}{string, a bucket name}
 
 \item{key}{string, object/file that you want to download (e.g, county_data.csv)}
 
-\item{file_path}{string, a path where you want the file to be downloaded ("~/Documents/my_proj/")}
+\item{dir_path}{string, a directory path to which you want the file to be downloaded ("~/Documents/my_proj/")}
 
-\item{key_path}{string, path to your key in the s3 bucket (e.g., "raw/" if you want raw/county_data.csv)}
+\item{key_path}{string, path to your key in the s3 bucket (e.g., "raw/" if you want to retrieve s3://[bucket_name]/raw/county_data.csv)}
+
+\item{create_local_directory}{logical, TRUE or FALSE to create a directory at dir_path if none exists (defaults to FALSE)}
 
 \item{...}{other arguments from paws's downloadfile}
 }
@@ -24,7 +33,7 @@ return invisibly the path where the file has been downloaded
 Download an object that is hosted on S3
 }
 \details{
-If file_path is not provided, the object will be saved in the current directory
+If dir_path is not provided, the object will be saved in the current directory
 }
 \examples{
 
