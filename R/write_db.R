@@ -90,7 +90,7 @@ simple_write_to_db <- function(schema, name, dta, overwrite = TRUE,
 safely_write_to_db <- function(schema, name, dta, overwrite = TRUE,
                                DB_instance = "data", ...) {
 
-  write_prompt <- paste0("Are you sure you want to overwrite",
+  write_prompt <- paste0("Are you sure you want to overwrite ",
                          schema, ".", name, " in the database? (yes/no): ")
   write_confirmation <- readline(prompt = write_prompt)
 
