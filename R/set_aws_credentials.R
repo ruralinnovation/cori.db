@@ -85,20 +85,20 @@ set_aws_credentials <- function(keyID, secretAccessKey,
     Sys.setenv(AWS_ACCESS_KEY_ID = keyID)
     Sys.setenv(AWS_SECRET_ACCESS_KEY = secretAccessKey)
 
-    # # Append API key to .Renviron file
-    # userconcat <- sprintf("AWS_ACCESS_KEY_ID='%s'", keyID)
-    # pwdconcat <- sprintf("AWS_SECRET_ACCESS_KEY='%s'", secretAccessKey)
-    # regionconcat <- sprintf("AWS_DEFAULT_REGION='%s'", region)
-    # write(userconcat, renviron, sep = "\n", append = TRUE)
-    # write(pwdconcat, renviron, sep = "\n", append = TRUE)
-    # write(regionconcat, renviron, sep = "\n", append = TRUE)
+    # Append API key to .Renviron file
+    userconcat <- sprintf("AWS_ACCESS_KEY_ID='%s'", keyID)
+    pwdconcat <- sprintf("AWS_SECRET_ACCESS_KEY='%s'", secretAccessKey)
+    regionconcat <- sprintf("AWS_DEFAULT_REGION='%s'", region)
+    write(userconcat, renviron, sep = "\n", append = TRUE)
+    write(pwdconcat, renviron, sep = "\n", append = TRUE)
+    write(regionconcat, renviron, sep = "\n", append = TRUE)
 
-    # cat(crayon::green(cli::symbol$tick),
-    #     paste("Your AWS key ID  and secret key",
-    #           "have been stored in your .Renviron",
-    #           'and can be accessed by Sys.getenv("AWS_ACCESS_KEY_ID")',
-    #           'and Sys.getenv("AWS_SECRET_ACCESS_KEY").',
-    #           '\nTo use now, restart R or run `readRenviron("~/.Renviron")`'))
+    cat(crayon::green(cli::symbol$tick),
+        paste("Your AWS key ID  and secret key",
+              "have been stored in your .Renviron",
+              'and can be accessed by Sys.getenv("AWS_ACCESS_KEY_ID")',
+              'and Sys.getenv("AWS_SECRET_ACCESS_KEY").',
+              '\nTo use now, restart R or run `readRenviron("~/.Renviron")`'))
 
     base::system2("aws", args = "configure", input = c(
       keyID,
