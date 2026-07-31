@@ -4,9 +4,9 @@ has_aws_credentials <- function() {
 
   home <- Sys.getenv("HOME")
 
+  renviron <- file.path(home, ".Renviron")
   #### TODO: This is wrong...
-  # renviron <- file.path(home, ".Renviron")
-  ####  we should store credentials in the way that AWS recomends (using the aws cli) :
+  ####  we should store credentials in the way that AWS recommends (using the aws cli) :
   ####  https://docs.aws.amazon.com/cli/latest/userguide/cli-authentication-user.html#cli-authentication-user-configure-wizard
   ####  ... minus the bit about the uber-complex configuration of SSO in AWS IAM Identity Center (later)
 
