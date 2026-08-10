@@ -102,11 +102,3 @@ pull_metadata <- function(con, table){
   }
   message(paste("Metadata for", table,"has been stored in a temp directory\n"))
 }
-
-# from https://adv-r.hadley.nz/conditions.html
-fail_with <- function(expr, value = NULL) {
-  tryCatch(
-    error = function(cnd) value,
-    expr
-  )
-}
