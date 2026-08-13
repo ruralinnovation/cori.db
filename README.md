@@ -41,21 +41,23 @@ con <- connect_to_db("metadata")
 DBI::dbDisconnect(con)
 ```
 
+## Migrated functions
+
+### S3 access functions _removed_ from this package
+
+**Note:** the AWS S3 functions (`get_s3_object()`, `list_s3_objects()`, `list_s3_buckets()`, `put_s3_object()`, `put_s3_objects_recursive()`, `read_s3_object()`, `write_s3_object()`, `set_aws_credentials()`) have moved to the `cori.data` package, where they use local AWS credentials when available and otherwise fall back to temporary, read-only credentials from the CORI credential-vending endpoint.
+
+### Session codebook functions _added_ to this package
+
+**Note:** `write_session_codebook()` moved here from `cori.utils`, joining `load_session_metadata()`, which already lived here. Both are part of the same session-metadata lifecycle: `pull_metadata()` (internal) writes table/field/source metadata to a temp directory as queries run against the database, `load_session_metadata()` reads it back, and `write_session_codebook()` exports it to an Excel file or Google Sheet. Keeping all three together avoids splitting one feature across two packages.
+
+### Table comparison functions _added_ to this package
+
+**Note:** `compare_dimensions()` and `get_dims()` moved here from `cori.utils` — they compare row/column counts of tables on a database connection, which fits `cori.db`'s DB/SQL scope better than `cori.utils`'s general-purpose utilities.
+
 ## Setup for Development
 
 Once you have all of the dependencies installed, to build and install this package from the local project directory, run:
 ```r
 pkgbuild::clean_dll(); pkgbuild::compile_dll(); devtools::document(); devtools::check(); devtools::install();
 ```
-
-## S3 access functions removed from this package
-
-Note: the AWS S3 functions (`get_s3_object()`, `list_s3_objects()`, `list_s3_buckets()`, `put_s3_object()`, `put_s3_objects_recursive()`, `read_s3_object()`, `write_s3_object()`, `set_aws_credentials()`) have moved to the `cori.data` package, where they use local AWS credentials when available and otherwise fall back to temporary, read-only credentials from the CORI credential-vending endpoint.
-
-## Table comparison functions
-
-Note: `compare_dimensions()` and `get_dims()` moved here from `cori.utils` — they compare row/column counts of tables on a database connection, which fits `cori.db`'s DB/SQL scope better than `cori.utils`'s general-purpose utilities.
-
-## Session codebook functions
-
-Note: `write_session_codebook()` moved here from `cori.utils`, joining `load_session_metadata()`, which already lived here. Both are part of the same session-metadata lifecycle: `pull_metadata()` (internal) writes table/field/source metadata to a temp directory as queries run against the database, `load_session_metadata()` reads it back, and `write_session_codebook()` exports it to an Excel file or Google Sheet. Keeping all three together avoids splitting one feature across two packages.
