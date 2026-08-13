@@ -3,11 +3,7 @@ url: https://ruralinnovation.github.io
 destination: "./docs"
 
 template:
-  params:
-    bootswatch: cosmo
-  # package: preferably
-  # params:
-  #   package: preferably
+  bootstrap: 5
 
 navbar:
   title: "CORI DB"

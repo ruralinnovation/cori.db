@@ -1,12 +1,12 @@
 Package: cori.db
 Type: Package
 Title: DB and SQL Helper Functions
-Version: 0.4.0
-Authors@R: c(person(given="Matt", family="Rogers", role=c("cre","aut"), email="matt.rogers@ruralinnovation.us"), 
-    person(given="Drew", family="Rosebush", role=c("ctb"), email="drew.rosebush@ruralinnovation.us"), 
+Version: 1.0.0
+Authors@R: c(person(given="Matt", family="Rogers", role=c("aut"), email="matt.rogers@ruralinnovation.us"),
+    person(given="Drew", family="Rosebush", role=c("aut"), email="drew.rosebush@ruralinnovation.us"),
     person(given="Olivier", family="Leroy", role=c("aut"), email="olivier.leroy@ruralinnovation.us"),
-    person(given="John", family="Hall", role=c("ctb"), email="john.hall@ruralinnovation.us"))
-Maintainer: Matt Rogers <matt.rogers@ruralinnovation.us>
+    person(given="John", family="Hall", role=c("cre","aut"), email="john.hall@ruralinnovation.us"))
+Maintainer: John Hall <john.hall@ruralinnovation.us>
 Description: Functions for connecting to and working with data storage.
 License: file LICENSE
 Encoding: UTF-8
