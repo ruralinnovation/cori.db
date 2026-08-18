@@ -3,11 +3,7 @@ url: https://ruralinnovation.github.io
 destination: "./docs"
 
 template:
-  params:
-    bootswatch: cosmo
-  # package: preferably
-  # params:
-  #   package: preferably
+  bootstrap: 5
 
 navbar:
   title: "CORI DB"
@@ -30,11 +26,13 @@ reference:
       - connect_to_db
   - title: "Explore"
     desc: >
-      Functions to search tables on the database
+      Functions to search and compare tables on the database
     contents:
       - search_db_tables
       - get_db_column_names
       - schema_size_db
+      - compare_dimensions
+      - get_dims
   - title: "Read and Write Data"
     desc: >
       Functions for reading and writing data
@@ -43,17 +41,11 @@ reference:
       - read_acs
       - read_sql
       - write_db
-  - title: "S3 interaction"
-    desc: >
-      Functions to list buckets, objects and downloading/uploading file
-    contents:
-      - set_aws_credentials
-      - list_s3_buckets
-      - list_s3_objects
-      - get_s3_object
-      - read_s3_object
-      - put_s3_object
-      - write_s3_object
+      - simple_write_to_db
+      - safely_write_to_db
+      - prepare_to_write_table
+      - copy_table_across_databases
+      - copy_table_across_schemas
   - title: "Metadata"
     desc: >
       Functions for creating, storing, and loading metadata
@@ -61,6 +53,7 @@ reference:
       - create_metadata_tables
       - update_metadata
       - load_session_metadata
+      - write_session_codebook
   - title: "SQL Helpers"
     desc: >
       Helper functions for running SQL code from an R session
@@ -68,4 +61,5 @@ reference:
       - execute_on_postgres
       - make_aliased_query
       - update_join
+      - get_sql
 
